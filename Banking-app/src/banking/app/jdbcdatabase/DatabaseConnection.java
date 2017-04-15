@@ -1,4 +1,4 @@
-package banking.app.database;
+package banking.app.jdbcdatabase;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
