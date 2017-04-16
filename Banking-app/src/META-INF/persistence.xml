@@ -3,6 +3,9 @@
   <persistence-unit name="PersistenceUnit" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>banking.app.entities.CardType</class>
+    <class>banking.app.entities.Card</class>
+    <class>banking.app.entities.Account</class>
+    <class>banking.app.entities.Transaction</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://slon.felk.cvut.cz:5432/student_db17_23"/>
       <property name="javax.persistence.jdbc.user" value="student_db17_23"/>

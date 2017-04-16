@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -20,6 +21,9 @@ public class CardType {
     
     @OneToMany(mappedBy = "cardType")
     private List<Card> cards;
+    
+    @ManyToMany
+    private List<PaymentPlace> acceptedAt;
 
     public CardType() {
     }
@@ -51,4 +55,14 @@ public class CardType {
     public void setCards(List<Card> cards) {
         this.cards = cards;
     }    
+
+    public List<PaymentPlace> getAcceptedAt() {
+        return acceptedAt;
+    }
+
+    public void setAcceptedAt(List<PaymentPlace> acceptedAt) {
+        this.acceptedAt = acceptedAt;
+    }
+    
+    
 }

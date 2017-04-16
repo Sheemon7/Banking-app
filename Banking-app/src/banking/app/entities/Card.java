@@ -26,8 +26,7 @@ public class Card {
     @Column(nullable = false)
     private BigDecimal withdrawalLimit;
 
-    public Card(Long id, CardType cardType, Account account, BigDecimal withdrawalLimit) {
-        this.id = id;
+    public Card(CardType cardType, Account account, BigDecimal withdrawalLimit) {
         this.cardType = cardType;
         this.account = account;
         this.withdrawalLimit = withdrawalLimit;
