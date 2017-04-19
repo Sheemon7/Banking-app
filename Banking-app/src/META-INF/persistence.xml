@@ -6,6 +6,10 @@
     <class>banking.app.entities.Card</class>
     <class>banking.app.entities.Account</class>
     <class>banking.app.entities.Transaction</class>
+    <class>banking.app.entities.Person</class>
+    <class>banking.app.entities.ATM</class>
+    <class>banking.app.entities.PaymentPlace</class>
+    <class>banking.app.entities.Trader</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://slon.felk.cvut.cz:5432/student_db17_23"/>
       <property name="javax.persistence.jdbc.user" value="student_db17_23"/>
