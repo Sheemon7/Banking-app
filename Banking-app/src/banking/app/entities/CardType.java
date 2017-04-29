@@ -19,10 +19,10 @@ public class CardType {
     @Column(nullable = false, unique = true, length = 100)
     private String typeName;
     
-    @OneToMany(mappedBy = "cardType")
+    @OneToMany(targetEntity=Account.class)
     private List<Card> cards;
     
-    @ManyToMany
+    @OneToMany
     private List<PaymentPlace> acceptedAt;
 
     public CardType() {

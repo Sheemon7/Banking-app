@@ -16,11 +16,11 @@ public class Card {
     private Long id;
 
     @ManyToOne
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private CardType cardType;    
     
     @ManyToOne
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private Account account;
     
     @Column(nullable = false)

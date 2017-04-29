@@ -17,11 +17,11 @@ public class Transaction {
     private Long id;
     
     @ManyToOne
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private Person sender;
     
     @ManyToOne
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private Person receiver;
     
     @Column(nullable = false)

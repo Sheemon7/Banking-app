@@ -14,13 +14,14 @@ public class Trader {
     private PaymentPlace paymentPlace;
     
     @ManyToOne
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private Account account;
     
     @ManyToOne
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private Person person;
-
+    
+    public Trader(){}
     public Trader(PaymentPlace paymentPlace, Account account, Person person) {
         this.paymentPlace = paymentPlace;
         this.account = account;

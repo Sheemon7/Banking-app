@@ -18,7 +18,8 @@ public class ATM {
     
     @Column(nullable = false)
     private BigDecimal maxWithrdawal;
-
+    public ATM(){}
+    
     public ATM(PaymentPlace paymentPlace, BigDecimal balance, BigDecimal maxWithrdawal) {
         this.paymentPlace = paymentPlace;
         this.balance = balance;

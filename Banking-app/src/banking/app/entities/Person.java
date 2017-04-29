@@ -1,65 +1,78 @@
 package banking.app.entities;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Person {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    
+    @GeneratedValue(generator="my_seq")
+    @SequenceGenerator(name="my_seq",sequenceName="person_id_person_seq", allocationSize=1)
+    private Long id_person;
     
     @Column(nullable=false)
-    private String firstName;
+    private String first_name;
     
     @Column(nullable=false)
-    private String secondName;
+    private String second_name;
     
     @Column(nullable=false)
     private int pin; //personal_identification_number
     
     @Column(nullable=false)
     String adress;
-
+    
+    @OneToMany( targetEntity=Account.class )
+    private List accountlist;
+    
+    @OneToMany( targetEntity=Trader.class )
+    private List traderlist;
+    
+    public Person(){}
     public Person(String firstName, String secondName, int pin, String adress) {
-        this.firstName = firstName;
-        this.secondName = secondName;
+        this.id_person = id_person;
+        this.first_name = firstName;
+        this.second_name = secondName;
         this.pin = pin;
         this.adress = adress;
     }
 
     public Long getId() {
-        return id;
+        return id_person;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.id_person = id;
     }
 
     public String getFirstName() {
-        return firstName;
+        return first_name;
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.first_name = firstName;
     }
 
     public String getSecondName() {
-        return secondName;
+        return second_name;
     }
 
     public void setSecondName(String secondName) {
-        this.secondName = secondName;
+        this.second_name = secondName;
     }
 
-    public int getPid() {
+    public int getPin() {
         return pin;
     }
 
-    public void setPid(int pin) {
+    public void setPin(int pin) {
         this.pin = pin;
     }
 
