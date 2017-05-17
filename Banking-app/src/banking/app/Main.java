@@ -5,6 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import banking.app.entities.*;
+import java.math.BigDecimal;
 
 public class Main {
     
@@ -14,10 +15,14 @@ public class Main {
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         
-        Person person = new Person("Tomas","Blbecek",3,"debilov");
+        Person person = new Person("Tomas","BOrec",3,"Pop");
         tx.begin();
         em.persist(person);
         tx.commit();
         
+        Account account = new Account(person,new BigDecimal(20));
+        tx.begin();
+        em.persist(account);
+        tx.commit();
     }
 }

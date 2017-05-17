@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -16,18 +17,18 @@ public class Card {
     private Long id;
 
     @ManyToOne
-    //@Column(nullable = false)
-    private CardType cardType;    
+    @JoinColumn(name = "id_card_type")
+    private CardType card_type;    
     
     @ManyToOne
-    //@Column(nullable = false)
+    @JoinColumn(name="id_account")
     private Account account;
     
     @Column(nullable = false)
     private BigDecimal withdrawalLimit;
 
     public Card(CardType cardType, Account account, BigDecimal withdrawalLimit) {
-        this.cardType = cardType;
+        this.card_type = cardType;
         this.account = account;
         this.withdrawalLimit = withdrawalLimit;
     }
@@ -44,11 +45,11 @@ public class Card {
     }
 
     public CardType getCardType() {
-        return cardType;
+        return card_type;
     }
 
     public void setCardType(CardType cardType) {
-        this.cardType = cardType;
+        this.card_type = cardType;
     }
 
     public Account getAccount() {

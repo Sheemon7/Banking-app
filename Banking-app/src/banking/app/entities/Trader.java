@@ -3,6 +3,7 @@ package banking.app.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
@@ -10,16 +11,18 @@ import javax.persistence.OneToOne;
 public class Trader {
     
     @Id
-    @OneToOne
+    @JoinColumn(name="id_payment_place")
     private PaymentPlace paymentPlace;
     
     @ManyToOne
-    //@Column(nullable = false)
+    @JoinColumn(name="id_account")
     private Account account;
     
     @ManyToOne
-    //@Column(nullable = false)
+    @JoinColumn(name="id_person")
     private Person person;
+    
+    
     
     public Trader(){}
     public Trader(PaymentPlace paymentPlace, Account account, Person person) {

@@ -7,8 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Account {
@@ -16,15 +18,16 @@ public class Account {
     private static final BigDecimal DEFAULT_BALANCE = BigDecimal.ZERO;
     
     @Id 
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(generator="my_seq1")
+    @SequenceGenerator(name="my_seq1",sequenceName="account_id_account_seq", allocationSize=1)
+    private Long id_account;
     
     @ManyToOne
-    //@Column(nullable = false)
+    @JoinColumn(name="id_owner")
     private Person owner;
     
-    @OneToMany( targetEntity=Card.class )
-    private List cardlist;
+    @OneToMany(mappedBy="account")
+    private List<Card> cards;
     
     @Column(nullable = false)
     private BigDecimal balance;

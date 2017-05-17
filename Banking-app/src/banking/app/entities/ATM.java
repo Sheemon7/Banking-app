@@ -4,13 +4,14 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
 public class ATM {
     
     @Id
-    @OneToOne
+    @JoinColumn(name="id_payment_place")
     private PaymentPlace paymentPlace;
     
     @Column(nullable = false)

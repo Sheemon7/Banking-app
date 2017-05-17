@@ -8,36 +8,30 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class CardType {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator="my_seq4")
+    @SequenceGenerator(name="my_seq4",sequenceName="cardtype_id_card_type_seq", allocationSize=1)
     private Long id;
     
     @Column(nullable = false, unique = true, length = 100)
     private String typeName;
     
-    @OneToMany(targetEntity=Account.class)
+    @OneToMany(mappedBy="card_type")
     private List<Card> cards;
     
-    @OneToMany
-    private List<PaymentPlace> acceptedAt;
+    @OneToMany(mappedBy="card_type")
+    private List<Accepts> acceptedAt;
 
     public CardType() {
     }
     
     public CardType(String typeName) {
         this.typeName = typeName;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getTypeName() {
@@ -56,13 +50,6 @@ public class CardType {
         this.cards = cards;
     }    
 
-    public List<PaymentPlace> getAcceptedAt() {
-        return acceptedAt;
-    }
 
-    public void setAcceptedAt(List<PaymentPlace> acceptedAt) {
-        this.acceptedAt = acceptedAt;
-    }
-    
     
 }

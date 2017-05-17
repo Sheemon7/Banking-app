@@ -8,13 +8,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Transaction {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(generator="my_seq3")
+    @SequenceGenerator(name="my_seq3",sequenceName="transaction_id_transaction_seq", allocationSize=1)
+    private Long id_transaction;
     
     @ManyToOne
     //@Column(nullable = false)
@@ -53,11 +55,11 @@ public class Transaction {
     }
 
     public Long getId() {
-        return id;
+        return id_transaction;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.id_transaction = id;
     }
 
     public Person getSender() {

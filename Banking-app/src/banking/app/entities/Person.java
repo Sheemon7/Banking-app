@@ -12,7 +12,6 @@ import javax.persistence.SequenceGenerator;
 @Entity
 public class Person {
     @Id
-    
     @GeneratedValue(generator="my_seq")
     @SequenceGenerator(name="my_seq",sequenceName="person_id_person_seq", allocationSize=1)
     private Long id_person;
@@ -29,15 +28,15 @@ public class Person {
     @Column(nullable=false)
     String adress;
     
-    @OneToMany( targetEntity=Account.class )
-    private List accountlist;
+    @OneToMany(mappedBy="owner")
+    private List<Account> accounts;
     
-    @OneToMany( targetEntity=Trader.class )
-    private List traderlist;
+    @OneToMany(mappedBy="person" )
+    private List<Trader> traders;
     
     public Person(){}
     public Person(String firstName, String secondName, int pin, String adress) {
-        this.id_person = id_person;
+//        this.id_person = id_person;
         this.first_name = firstName;
         this.second_name = secondName;
         this.pin = pin;
