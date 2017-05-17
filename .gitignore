@@ -1,3 +1,5 @@
 /Banking-app/nbproject/private/
 build/
 dist/
+.idea/
+lib/
