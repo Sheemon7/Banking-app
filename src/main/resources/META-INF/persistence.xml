@@ -7,7 +7,6 @@
     <class>banking.app.entities.Card</class>
     <class>banking.app.entities.Account</class>
     <class>banking.app.entities.Transaction</class>
-   <class>banking.app.entities.Accepts</class>
     <class>banking.app.entities.ATM</class>
     <class>banking.app.entities.PaymentPlace</class>
     <class>banking.app.entities.Trader</class>

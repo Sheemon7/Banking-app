@@ -4,7 +4,9 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
+@Table(name="person")
 public class Person {
+
     @Id
     @GeneratedValue(generator="my_seq")
     @SequenceGenerator(name="my_seq",sequenceName="person_id_person_seq", allocationSize=1)
@@ -22,10 +24,10 @@ public class Person {
     @Column(nullable=false)
     private String adress;
 
-    @OneToMany(mappedBy="owner", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="owner", fetch=FetchType.EAGER)
     private List<Account> accounts;
 
-    @OneToMany(mappedBy="person", fetch = FetchType.LAZY )
+    @OneToMany(mappedBy="person", fetch=FetchType.EAGER)
     private List<Trader> traders;
 
     public Person() {}
@@ -102,21 +104,22 @@ public class Person {
         Person person = (Person) o;
 
         if (pin != person.pin) return false;
-        if (!id_person.equals(person.id_person)) return false;
-        if (!first_name.equals(person.first_name)) return false;
-        if (!second_name.equals(person.second_name)) return false;
-        if (!adress.equals(person.adress)) return false;
-        return accounts != null ? accounts.equals(person.accounts) : person.accounts == null && (traders != null ? traders.equals(person.traders) : person.traders == null);
+        if (id_person != null ? !id_person.equals(person.id_person) : person.id_person != null) return false;
+        if (first_name != null ? !first_name.equals(person.first_name) : person.first_name != null) return false;
+        if (second_name != null ? !second_name.equals(person.second_name) : person.second_name != null) return false;
+        if (adress != null ? !adress.equals(person.adress) : person.adress != null) return false;
+        if (accounts != null ? !accounts.equals(person.accounts) : person.accounts != null) return false;
+        return traders != null ? traders.equals(person.traders) : person.traders == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = id_person.hashCode();
-        result = 31 * result + first_name.hashCode();
-        result = 31 * result + second_name.hashCode();
+        int result = id_person != null ? id_person.hashCode() : 0;
+        result = 31 * result + (first_name != null ? first_name.hashCode() : 0);
+        result = 31 * result + (second_name != null ? second_name.hashCode() : 0);
         result = 31 * result + pin;
-        result = 31 * result + adress.hashCode();
+        result = 31 * result + (adress != null ? adress.hashCode() : 0);
         result = 31 * result + (accounts != null ? accounts.hashCode() : 0);
         result = 31 * result + (traders != null ? traders.hashCode() : 0);
         return result;
@@ -130,8 +133,6 @@ public class Person {
                 ", second_name='" + second_name + '\'' +
                 ", pin=" + pin +
                 ", adress='" + adress + '\'' +
-                ", accounts=" + accounts +
-                ", traders=" + traders +
                 '}';
     }
 }

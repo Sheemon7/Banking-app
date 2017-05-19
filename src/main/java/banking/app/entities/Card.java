@@ -1,15 +1,10 @@
 package banking.app.entities;
 
 import java.math.BigDecimal;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "card")
 public class Card {
     
     @Id
@@ -44,12 +39,12 @@ public class Card {
         this.id = id;
     }
 
-    public CardType getCardType() {
+    public CardType getCard_type() {
         return card_type;
     }
 
-    public void setCardType(CardType cardType) {
-        this.card_type = cardType;
+    public void setCard_type(CardType card_type) {
+        this.card_type = card_type;
     }
 
     public Account getAccount() {
@@ -66,6 +61,38 @@ public class Card {
 
     public void setWithdrawalLimit(BigDecimal withdrawalLimit) {
         this.withdrawalLimit = withdrawalLimit;
-    }    
-    
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Card card = (Card) o;
+
+        if (id != null ? !id.equals(card.id) : card.id != null) return false;
+        if (card_type != null ? !card_type.equals(card.card_type) : card.card_type != null) return false;
+        if (account != null ? !account.equals(card.account) : card.account != null) return false;
+        return withdrawalLimit != null ? withdrawalLimit.equals(card.withdrawalLimit) : card.withdrawalLimit == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (card_type != null ? card_type.hashCode() : 0);
+        result = 31 * result + (account != null ? account.hashCode() : 0);
+        result = 31 * result + (withdrawalLimit != null ? withdrawalLimit.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "id=" + id +
+                ", card_type=" + card_type +
+                ", account=" + account +
+                ", withdrawalLimit=" + withdrawalLimit +
+                '}';
+    }
 }

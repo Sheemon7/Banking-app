@@ -1,35 +1,31 @@
 package banking.app.entities;
 
+import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.sql.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "transaction")
 public class Transaction {
-    
+
     @Id
     @GeneratedValue(generator="my_seq3")
     @SequenceGenerator(name="my_seq3",sequenceName="transaction_id_transaction_seq", allocationSize=1)
     private Long id_transaction;
     
     @ManyToOne
-    //@Column(nullable = false)
-    private Person sender;
+    @JoinColumn(name = "id_payment_place")
+    private PaymentPlace sender;
     
     @ManyToOne
-    //@Column(nullable = false)
-    private Person receiver;
+    @JoinColumn(name = "id_account")
+    private Account receiver;
     
     @Column(nullable = false)
     private BigDecimal amount;
     
-    @Column(length=100)
+    @Column(length = 100)
     private String messageToSender;
     
     @Column(length = 100)
@@ -41,11 +37,11 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(Person sender, Person receiver, BigDecimal amount, Date dueDate) {
+    public Transaction(PaymentPlace sender, Account receiver, BigDecimal amount, Date dueDate) {
         this(sender, receiver, amount, "", "", dueDate);
     }
 
-    public Transaction(Person sender, Person receiver, BigDecimal amount, String messageToSender, String messageToReceiver, Date dueDate) {
+    public Transaction(PaymentPlace sender, Account receiver, BigDecimal amount, String messageToSender, String messageToReceiver, Date dueDate) {
         this.sender = sender;
         this.receiver = receiver;
         this.amount = amount;
@@ -54,27 +50,27 @@ public class Transaction {
         this.dueDate = dueDate;
     }
 
-    public Long getId() {
+    public Long getId_transaction() {
         return id_transaction;
     }
 
-    public void setId(Long id) {
-        this.id_transaction = id;
+    public void setId_transaction(Long id_transaction) {
+        this.id_transaction = id_transaction;
     }
 
-    public Person getSender() {
+    public PaymentPlace getSender() {
         return sender;
     }
 
-    public void setSender(Person sender) {
+    public void setSender(PaymentPlace sender) {
         this.sender = sender;
     }
 
-    public Person getReceiver() {
+    public Account getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(Person receiver) {
+    public void setReceiver(Account receiver) {
         this.receiver = receiver;
     }
 
@@ -109,7 +105,49 @@ public class Transaction {
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
-    
-    
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Transaction that = (Transaction) o;
+
+        if (id_transaction != null ? !id_transaction.equals(that.id_transaction) : that.id_transaction != null)
+            return false;
+        if (sender != null ? !sender.equals(that.sender) : that.sender != null) return false;
+        if (receiver != null ? !receiver.equals(that.receiver) : that.receiver != null) return false;
+        if (amount != null ? !amount.equals(that.amount) : that.amount != null) return false;
+        if (messageToSender != null ? !messageToSender.equals(that.messageToSender) : that.messageToSender != null)
+            return false;
+        if (messageToReceiver != null ? !messageToReceiver.equals(that.messageToReceiver) : that.messageToReceiver != null)
+            return false;
+        return dueDate != null ? dueDate.equals(that.dueDate) : that.dueDate == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id_transaction != null ? id_transaction.hashCode() : 0;
+        result = 31 * result + (sender != null ? sender.hashCode() : 0);
+        result = 31 * result + (receiver != null ? receiver.hashCode() : 0);
+        result = 31 * result + (amount != null ? amount.hashCode() : 0);
+        result = 31 * result + (messageToSender != null ? messageToSender.hashCode() : 0);
+        result = 31 * result + (messageToReceiver != null ? messageToReceiver.hashCode() : 0);
+        result = 31 * result + (dueDate != null ? dueDate.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id_transaction=" + id_transaction +
+                ", sender=" + sender +
+                ", receiver=" + receiver +
+                ", amount=" + amount +
+                ", messageToSender='" + messageToSender + '\'' +
+                ", messageToReceiver='" + messageToReceiver + '\'' +
+                ", dueDate=" + dueDate +
+                '}';
+    }
 }
