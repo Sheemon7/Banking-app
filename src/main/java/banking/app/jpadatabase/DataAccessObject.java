@@ -1,5 +1,7 @@
 package banking.app.jpadatabase;
 
+import banking.app.entities.Person;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -8,9 +10,9 @@ import java.util.List;
 
 public abstract class DataAccessObject<E> {
 
-    static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence.createEntityManagerFactory("PersistenceUnit");
+    private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence.createEntityManagerFactory("PersistenceUnit");
     static final EntityManager ENTITY_MANAGER = ENTITY_MANAGER_FACTORY.createEntityManager();
-    static final EntityTransaction TRANSACTION = ENTITY_MANAGER.getTransaction();
+    private static final EntityTransaction TRANSACTION = ENTITY_MANAGER.getTransaction();
 
     private Class<E> classType;
 

@@ -1,33 +1,16 @@
 package banking.app;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import banking.app.entities.*;
-import java.math.BigDecimal;
+import banking.app.jpadatabase.AccountDAO;
+import banking.app.jpadatabase.DataAccessObject;
+import banking.app.jpadatabase.PersonDAO;
 
 public class Main {
     
     public static void main(String[] args) {
-        //Entity manager and transaction
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("PersistenceUnit");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        
-        Person person = new Person("Tomas","BOrec",3,"Pop");
-        tx.begin();
-        em.persist(person);
-        tx.commit();
-        
-        person = new Person("simon7","Ahoj",3,"3");
-        tx.begin();
-        em.persist(person);
-        tx.commit();
-        
-        Account account = new Account(person,new BigDecimal(20));
-        tx.begin();
-        em.persist(account);
-        tx.commit();
+        PersonDAO personDAO = new PersonDAO();
+        System.out.println(personDAO.getEntitiesList());
+
+        AccountDAO accountDAO = new AccountDAO();
+        System.out.println(accountDAO.getEntitiesList());
     }
 }
