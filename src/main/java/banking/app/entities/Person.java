@@ -26,7 +26,7 @@ public class Person {
     private int pin; //personal_identification_number
     
     @Column(nullable=false)
-    String adress;
+    private String adress;
     
     @OneToMany(mappedBy="owner")
     private List<Account> accounts;
