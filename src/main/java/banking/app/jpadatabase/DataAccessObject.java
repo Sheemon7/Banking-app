@@ -23,6 +23,11 @@ abstract class DataAccessObject<E> {
         storedProceure.execute();
     }
 
+    public void truncateAll() {
+        StoredProcedureQuery storedProceure = ENTITY_MANAGER.createStoredProcedureQuery("truncate_all");
+        storedProceure.execute();
+    }
+
     public void rollback() {
         TRANSACTION.rollback();
     }

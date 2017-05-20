@@ -7,23 +7,34 @@ import javax.persistence.*;
 @Table(name = "ATM")
 public class ATM {
 
+    private static final BigDecimal DEFAULT_BALANCE = new BigDecimal("100000");
+    private static final BigDecimal DEFAULT_MAX_WITHDRAWAL = new BigDecimal("5000");
+
     @Id
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name="id_payment_place")
     private PaymentPlace paymentPlace;
-    
+
     @Column(nullable = false)
     private BigDecimal balance;
     
     @Column(nullable = false)
     private BigDecimal maxWithdrawal;
 
-    public ATM(){}
-    
-    public ATM(PaymentPlace paymentPlace, BigDecimal balance, BigDecimal maxWithrdawal) {
+    public ATM() {}
+
+    public ATM(String address) {
+        this(new PaymentPlace(address), DEFAULT_BALANCE, DEFAULT_MAX_WITHDRAWAL);
+    }
+
+    public ATM(String address, BigDecimal balance, BigDecimal maxWithdrawal) {
+        this(new PaymentPlace(address), balance, maxWithdrawal);
+    }
+
+    private ATM(PaymentPlace paymentPlace, BigDecimal balance, BigDecimal maxWithdrawal) {
         this.paymentPlace = paymentPlace;
         this.balance = balance;
-        this.maxWithdrawal = maxWithrdawal;
+        this.maxWithdrawal = maxWithdrawal;
     }
 
     public PaymentPlace getPaymentPlace() {
@@ -76,7 +87,7 @@ public class ATM {
         return "ATM{" +
                 "paymentPlace=" + paymentPlace +
                 ", balance=" + balance +
-                ", maxWithrdawal=" + maxWithdrawal +
+                ", maxWithdrawal=" + maxWithdrawal +
                 '}';
     }
 }

@@ -22,7 +22,7 @@ public class Person {
     private int pin; //personal_identification_number
 
     @Column(nullable=false)
-    private String adress;
+    private String address;
 
     @OneToMany(mappedBy="owner", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Account> accounts;
@@ -37,7 +37,7 @@ public class Person {
         this.first_name = firstName;
         this.second_name = secondName;
         this.pin = pin;
-        this.adress = adress;
+        this.address = adress;
     }
 
     public Long getId_person() {
@@ -72,12 +72,12 @@ public class Person {
         this.pin = pin;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String adress) {
+        this.address = adress;
     }
 
     public List<Account> getAccounts() {
@@ -107,7 +107,7 @@ public class Person {
         if (id_person != null ? !id_person.equals(person.id_person) : person.id_person != null) return false;
         if (first_name != null ? !first_name.equals(person.first_name) : person.first_name != null) return false;
         if (second_name != null ? !second_name.equals(person.second_name) : person.second_name != null) return false;
-        if (adress != null ? !adress.equals(person.adress) : person.adress != null) return false;
+        if (address != null ? !address.equals(person.address) : person.address != null) return false;
         if (accounts != null ? !accounts.equals(person.accounts) : person.accounts != null) return false;
         return traders != null ? traders.equals(person.traders) : person.traders == null;
 
@@ -119,7 +119,7 @@ public class Person {
         result = 31 * result + (first_name != null ? first_name.hashCode() : 0);
         result = 31 * result + (second_name != null ? second_name.hashCode() : 0);
         result = 31 * result + pin;
-        result = 31 * result + (adress != null ? adress.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
         return result;
     }
 
@@ -130,7 +130,7 @@ public class Person {
                 ", first_name='" + first_name + '\'' +
                 ", second_name='" + second_name + '\'' +
                 ", pin=" + pin +
-                ", adress='" + adress + '\'' +
+                ", adress='" + address + '\'' +
                 '}';
     }
 }

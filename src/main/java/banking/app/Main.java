@@ -1,7 +1,9 @@
 package banking.app;
 
+import banking.app.entities.ATM;
 import banking.app.entities.Account;
 import banking.app.entities.Person;
+import banking.app.jpadatabase.ATMDAO;
 import banking.app.jpadatabase.AccountDAO;
 import banking.app.jpadatabase.PersonDAO;
 
@@ -13,14 +15,22 @@ public class Main {
     public static void main(String[] args) {
         PersonDAO personDAO = new PersonDAO();
         AccountDAO accountDAO = new AccountDAO();
+        ATMDAO atmdao = new ATMDAO();
 
-        personDAO.dropAll();
+//        personDAO.dropAll();
+        personDAO.truncateAll();
+
 
         Person simon = new Person("simon", "mandlik", 1, "kobylisy");
         Person tomas = new Person("tomas", "palecek", 0, "hanspaulka");
         personDAO.saveEntity(simon);
         personDAO.saveEntity(tomas);
         System.out.println(personDAO.getEntitiesList());
+
+        ATM testTrigger = new ATM("dejvicka 4", new BigDecimal("80"), new BigDecimal("5000"));
+        atmdao.saveEntity(testTrigger);
+        System.out.println(atmdao.getEntitiesList());
+
 //
 //
 //        Person simon = personDAO.getEntity(61L);

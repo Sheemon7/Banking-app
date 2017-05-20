@@ -16,6 +16,8 @@
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="javax.persistence.jdbc.password" value="shimando"/>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
+      <!--pozor drop-and-create sunda i triggery!-->
+      <!--<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>-->
     </properties>
   </persistence-unit>
 </persistence>
