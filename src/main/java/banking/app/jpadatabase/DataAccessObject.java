@@ -6,26 +6,12 @@ import banking.app.entities.Person;
 import javax.persistence.*;
 import java.util.List;
 
-abstract class DataAccessObject<E> {
-
-    private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence.createEntityManagerFactory("PersistenceUnit");
-    static final EntityManager ENTITY_MANAGER = ENTITY_MANAGER_FACTORY.createEntityManager();
-    private static final EntityTransaction TRANSACTION = ENTITY_MANAGER.getTransaction();
+abstract class DataAccessObject<E> extends DatabaseAccess{
 
     private Class<E> classType;
 
     DataAccessObject(Class<E> classType) {
         this.classType = classType;
-    }
-
-    public void dropAll() {
-        StoredProcedureQuery storedProceure = ENTITY_MANAGER.createStoredProcedureQuery("drop_all");
-        storedProceure.execute();
-    }
-
-    public void truncateAll() {
-        StoredProcedureQuery storedProceure = ENTITY_MANAGER.createStoredProcedureQuery("truncate_all");
-        storedProceure.execute();
     }
 
     public void rollback() {
@@ -42,6 +28,10 @@ abstract class DataAccessObject<E> {
     public E saveEntity(E entity) {
         TRANSACTION.begin();
         ENTITY_MANAGER.persist(entity);
+        TRANSACTION.commit();
+        // if trigger changed entity
+        TRANSACTION.begin();
+        ENTITY_MANAGER.refresh(entity);
         TRANSACTION.commit();
         return entity;
     }

@@ -26,7 +26,7 @@ BEGIN
   DROP TABLE public.sequence;
   ALTER SEQUENCE public.account_id_account_seq RESTART WITH 1;
   ALTER SEQUENCE public.cardtype_id_card_type_seq RESTART WITH 1;
-  ALTER SEQUENCE public.paymentplace_id_paymnet_place_seq RESTART WITH 1;
+  ALTER SEQUENCE public.paymentplace_id_payment_place_seq RESTART WITH 1;
   ALTER SEQUENCE public.person_id_person_seq RESTART WITH 1;
   ALTER SEQUENCE public.transaction_id_transaction_seq RESTART WITH 1;
 END;

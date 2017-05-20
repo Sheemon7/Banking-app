@@ -5,6 +5,7 @@ import banking.app.entities.Account;
 import banking.app.entities.Person;
 import banking.app.jpadatabase.ATMDAO;
 import banking.app.jpadatabase.AccountDAO;
+import banking.app.jpadatabase.DatabaseAccess;
 import banking.app.jpadatabase.PersonDAO;
 
 import java.math.BigDecimal;
@@ -17,9 +18,11 @@ public class Main {
         AccountDAO accountDAO = new AccountDAO();
         ATMDAO atmdao = new ATMDAO();
 
-//        personDAO.dropAll();
-        personDAO.truncateAll();
-
+        DatabaseAccess da = new DatabaseAccess();
+        // smaze triggery! pro uplny restart
+//        da.dropAll();
+        da.truncateAll();
+        da.updateAllProcedures();
 
         Person simon = new Person("simon", "mandlik", 1, "kobylisy");
         Person tomas = new Person("tomas", "palecek", 0, "hanspaulka");
