@@ -2,6 +2,8 @@ package banking.app.jpadatabase;
 
 import banking.app.entities.PaymentPlace;
 import banking.app.entities.Person;
+import banking.app.util.*;
+import banking.app.util.EntityNotFoundException;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,10 +20,13 @@ abstract class DataAccessObject<E> extends DatabaseAccess{
         TRANSACTION.rollback();
     }
 
-    public E getEntity(Long id) {
+    public E getEntity(Long id) throws EntityNotFoundException {
         TRANSACTION.begin();
         E entity = ENTITY_MANAGER.find(classType, id);
         TRANSACTION.commit();
+        if (entity == null) {
+            throw new banking.app.util.EntityNotFoundException(id);
+        }
         return entity;
     }
 

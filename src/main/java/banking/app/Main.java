@@ -7,6 +7,8 @@ import banking.app.jpadatabase.ATMDAO;
 import banking.app.jpadatabase.AccountDAO;
 import banking.app.jpadatabase.DatabaseAccess;
 import banking.app.jpadatabase.PersonDAO;
+import banking.app.util.EntityNotFoundException;
+import banking.app.util.IncorrectAccountPasswordException;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -31,9 +33,21 @@ public class Main {
         a1 = null;
 
         // musis vedet id uctu - gui ti to rekne
-        a1 = accountDAO.loginAccount(id, "heslospatne");
+        try {
+            a1 = accountDAO.loginAccount(id, "heslospatne");
+        } catch (IncorrectAccountPasswordException e) {
+            e.printStackTrace();
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
         System.out.println(a1);
-        a1 = accountDAO.loginAccount(id, "heslo1");
+        try {
+            a1 = accountDAO.loginAccount(id, "heslo1");
+        } catch (IncorrectAccountPasswordException e) {
+            e.printStackTrace();
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
         System.out.println(a1);
 
 
