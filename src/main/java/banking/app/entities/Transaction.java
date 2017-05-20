@@ -1,6 +1,5 @@
 package banking.app.entities;
 
-import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.sql.Date;
 import javax.persistence.*;
@@ -16,7 +15,7 @@ public class Transaction {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_payment_place")
-    private PaymentPlace sender;
+    private Card sender;
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_account")
@@ -32,22 +31,22 @@ public class Transaction {
     private String messageToReceiver;
     
     @Column(nullable=false)
-    private Date dueDate;
+    private Date date;
 
     public Transaction() {
     }
 
-    public Transaction(PaymentPlace sender, Account receiver, BigDecimal amount, Date dueDate) {
+    public Transaction(Card sender, Account receiver, BigDecimal amount, Date dueDate) {
         this(sender, receiver, amount, "", "", dueDate);
     }
 
-    public Transaction(PaymentPlace sender, Account receiver, BigDecimal amount, String messageToSender, String messageToReceiver, Date dueDate) {
+    public Transaction(Card sender, Account receiver, BigDecimal amount, String messageToSender, String messageToReceiver, Date dueDate) {
         this.sender = sender;
         this.receiver = receiver;
         this.amount = amount;
         this.messageToSender = messageToSender;
         this.messageToReceiver = messageToReceiver;
-        this.dueDate = dueDate;
+        this.date = dueDate;
     }
 
     public Long getId_transaction() {
@@ -58,11 +57,11 @@ public class Transaction {
         this.id_transaction = id_transaction;
     }
 
-    public PaymentPlace getSender() {
+    public Card getSender() {
         return sender;
     }
 
-    public void setSender(PaymentPlace sender) {
+    public void setSender(Card sender) {
         this.sender = sender;
     }
 
@@ -98,12 +97,12 @@ public class Transaction {
         this.messageToReceiver = messageToReceiver;
     }
 
-    public Date getDueDate() {
-        return dueDate;
+    public Date getDate() {
+        return date;
     }
 
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
+    public void setDate(Date dueDate) {
+        this.date = dueDate;
     }
 
     @Override
@@ -122,7 +121,7 @@ public class Transaction {
             return false;
         if (messageToReceiver != null ? !messageToReceiver.equals(that.messageToReceiver) : that.messageToReceiver != null)
             return false;
-        return dueDate != null ? dueDate.equals(that.dueDate) : that.dueDate == null;
+        return date != null ? date.equals(that.date) : that.date == null;
 
     }
 
@@ -134,7 +133,7 @@ public class Transaction {
         result = 31 * result + (amount != null ? amount.hashCode() : 0);
         result = 31 * result + (messageToSender != null ? messageToSender.hashCode() : 0);
         result = 31 * result + (messageToReceiver != null ? messageToReceiver.hashCode() : 0);
-        result = 31 * result + (dueDate != null ? dueDate.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
         return result;
     }
 
@@ -147,7 +146,7 @@ public class Transaction {
                 ", amount=" + amount +
                 ", messageToSender='" + messageToSender + '\'' +
                 ", messageToReceiver='" + messageToReceiver + '\'' +
-                ", dueDate=" + dueDate +
+                ", dueDate=" + date +
                 '}';
     }
 }

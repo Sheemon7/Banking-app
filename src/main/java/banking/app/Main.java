@@ -22,33 +22,22 @@ public class Main {
         // smaze triggery! pro uplny restart
 //        da.dropAll();
         da.truncateAll();
-        da.updateAllProcedures();
+//        da.updateAllProcedures();
+//
+        Account a1 = new Account("heslo1", new Person("simon", "mandlik", 1, "kladno"));
+        System.out.println(a1.getPassword());
+        accountDAO.saveEntity(a1);
+        long id = a1.getId_account();
+        a1 = null;
 
-        Person simon = new Person("simon", "mandlik", 1, "kobylisy");
-        Person tomas = new Person("tomas", "palecek", 0, "hanspaulka");
-        personDAO.saveEntity(simon);
-        personDAO.saveEntity(tomas);
-        System.out.println(personDAO.getEntitiesList());
+        // musis vedet id uctu - gui ti to rekne
+        a1 = accountDAO.loginAccount(id, "heslospatne");
+        System.out.println(a1);
+        a1 = accountDAO.loginAccount(id, "heslo1");
+        System.out.println(a1);
 
-        ATM testTrigger = new ATM("dejvicka 4", new BigDecimal("80"), new BigDecimal("5000"));
-        atmdao.saveEntity(testTrigger);
-        System.out.println(atmdao.getEntitiesList());
 
 //
 //
-        Account simonacc1 = new Account(simon);
-        Account simonacc2 = new Account(simon, new BigDecimal("100"));
-        Account tomasacc = new Account(tomas, new BigDecimal("-100"));
-        accountDAO.saveEntity(simonacc1);
-        accountDAO.saveEntity(simonacc2);
-        accountDAO.saveEntity(tomasacc);
-        personDAO.saveEntity(simon);
-        System.out.println(accountDAO.getEntitiesList());
-//
-//
-//        // CASCADE TEST
-//        System.out.println(accountDAO.getEntitiesList());
-//        personDAO.deleteEntity(61L);
-//        System.out.println(accountDAO.getEntitiesList());
     }
 }

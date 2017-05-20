@@ -1,7 +1,13 @@
 package banking.app.entities;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.List;
+import java.util.Random;
 import javax.persistence.*;
 
 @Entity
@@ -15,8 +21,15 @@ public class Account {
     @SequenceGenerator(name="my_seq1",sequenceName="account_id_account_seq", allocationSize=1)
     private Long id_account;
 
+    @Column
     private String iban;
-    
+
+    @Column(nullable = false)
+    private String salt;
+
+    @Column(nullable = false)
+    private String password;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="id_owner")
     private Person owner;
@@ -30,17 +43,28 @@ public class Account {
     public Account() {
     }
 
-    public Account(Person owner, BigDecimal balance) {
+    public Account(String password, Person owner) {
+        this(password, owner, DEFAULT_BALANCE);
+    }
+
+    public Account(String password, Person owner, BigDecimal balance) {
+        final Random r = new SecureRandom();
+        byte[] salt = new byte[32];
+        r.nextBytes(salt);
+        this.salt = new String(salt, StandardCharsets.UTF_8);
+        this.password = getSaltyPasswordHash(password);
         this.owner = owner;
         this.balance = balance;
     }
 
-    public Account(Person owner) {
-        this(owner, DEFAULT_BALANCE);
-    }
-
-    public static BigDecimal getDefaultBalance() {
-        return DEFAULT_BALANCE;
+    public String getSaltyPasswordHash(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] bytes = digest.digest((password + this.salt).getBytes("UTF-8"));
+            return new String(bytes, StandardCharsets.UTF_8);
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
+            return null;
+        }
     }
 
     public Long getId_account() {
@@ -51,16 +75,32 @@ public class Account {
         this.id_account = id_account;
     }
 
-    public Person getOwner() {
-        return owner;
-    }
-
     public String getIban() {
         return iban;
     }
 
     public void setIban(String iban) {
         this.iban = iban;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Person getOwner() {
+        return owner;
     }
 
     public void setOwner(Person owner) {
@@ -92,6 +132,8 @@ public class Account {
 
         if (id_account != null ? !id_account.equals(account.id_account) : account.id_account != null) return false;
         if (iban != null ? !iban.equals(account.iban) : account.iban != null) return false;
+        if (salt != null ? !salt.equals(account.salt) : account.salt != null) return false;
+        if (password != null ? !password.equals(account.password) : account.password != null) return false;
         if (owner != null ? !owner.equals(account.owner) : account.owner != null) return false;
         if (cards != null ? !cards.equals(account.cards) : account.cards != null) return false;
         return balance != null ? balance.equals(account.balance) : account.balance == null;
@@ -102,6 +144,8 @@ public class Account {
     public int hashCode() {
         int result = id_account != null ? id_account.hashCode() : 0;
         result = 31 * result + (iban != null ? iban.hashCode() : 0);
+        result = 31 * result + (salt != null ? salt.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (owner != null ? owner.hashCode() : 0);
         result = 31 * result + (cards != null ? cards.hashCode() : 0);
         result = 31 * result + (balance != null ? balance.hashCode() : 0);
@@ -113,6 +157,7 @@ public class Account {
         return "Account{" +
                 "id_account=" + id_account +
                 ", iban='" + iban + '\'' +
+                ", owner=" + owner +
                 ", balance=" + balance +
                 '}';
     }
