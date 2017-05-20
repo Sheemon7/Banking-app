@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION public.truncate_all()
-  RETURNS void
+  RETURNS VOID
 AS
 $BODY$
 BEGIN

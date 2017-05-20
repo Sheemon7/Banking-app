@@ -36,15 +36,14 @@ public class Main {
 
 //
 //
-//        Person simon = personDAO.getEntity(61L);
-//        Account simonacc1 = new Account(simon);
-//        Account simonacc2 = new Account(simon, new BigDecimal("100"));
-////        Account tomasacc = new Account(tomas, new BigDecimal("-100"));
-//        accountDAO.saveEntity(simonacc1);
-//        accountDAO.saveEntity(simonacc2);
-////        accountDAO.saveEntity(tomasacc);
-//        personDAO.saveEntity(simon);
-//        System.out.println(accountDAO.getEntitiesList());
+        Account simonacc1 = new Account(simon);
+        Account simonacc2 = new Account(simon, new BigDecimal("100"));
+        Account tomasacc = new Account(tomas, new BigDecimal("-100"));
+        accountDAO.saveEntity(simonacc1);
+        accountDAO.saveEntity(simonacc2);
+        accountDAO.saveEntity(tomasacc);
+        personDAO.saveEntity(simon);
+        System.out.println(accountDAO.getEntitiesList());
 //
 //
 //        // CASCADE TEST

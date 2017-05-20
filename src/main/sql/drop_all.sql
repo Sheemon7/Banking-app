@@ -1,19 +1,30 @@
 CREATE OR REPLACE FUNCTION public.drop_all()
-  RETURNS void
+  RETURNS VOID
 AS
 $BODY$
 BEGIN
-  ALTER TABLE public.transaction DROP CONSTRAINT fk_transaction_id_account;
-  ALTER TABLE public.transaction DROP CONSTRAINT fk_transaction_id_payment_place;
-  ALTER TABLE public.trader DROP CONSTRAINT fk_trader_id_account;
-  ALTER TABLE public.trader DROP CONSTRAINT fk_trader_id_person;
-  ALTER TABLE public.trader DROP CONSTRAINT fk_trader_id_payment_place;
-  ALTER TABLE public.payment_place_card_type DROP CONSTRAINT fk_payment_place_card_type_accepts_id;
-  ALTER TABLE public.payment_place_card_type DROP CONSTRAINT fk_payment_place_card_type_acceptedat_id_payment_place;
-  ALTER TABLE public.card DROP CONSTRAINT fk_card_id_account;
-  ALTER TABLE public.card DROP CONSTRAINT fk_card_id_card_type;
-  ALTER TABLE public.atm DROP CONSTRAINT fk_atm_id_payment_place;
-  ALTER TABLE public.account DROP CONSTRAINT fk_account_id_owner;
+  ALTER TABLE public.transaction
+    DROP CONSTRAINT fk_transaction_id_account;
+  ALTER TABLE public.transaction
+    DROP CONSTRAINT fk_transaction_id_payment_place;
+  ALTER TABLE public.trader
+    DROP CONSTRAINT fk_trader_id_account;
+  ALTER TABLE public.trader
+    DROP CONSTRAINT fk_trader_id_person;
+  ALTER TABLE public.trader
+    DROP CONSTRAINT fk_trader_id_payment_place;
+  ALTER TABLE public.payment_place_card_type
+    DROP CONSTRAINT fk_payment_place_card_type_accepts_id;
+  ALTER TABLE public.payment_place_card_type
+    DROP CONSTRAINT fk_payment_place_card_type_acceptedat_id_payment_place;
+  ALTER TABLE public.card
+    DROP CONSTRAINT fk_card_id_account;
+  ALTER TABLE public.card
+    DROP CONSTRAINT fk_card_id_card_type;
+  ALTER TABLE public.atm
+    DROP CONSTRAINT fk_atm_id_payment_place;
+  ALTER TABLE public.account
+    DROP CONSTRAINT fk_account_id_owner;
   DROP TABLE public.transaction;
   DROP TABLE public.trader;
   DROP TABLE public.payment_place_card_type;

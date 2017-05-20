@@ -14,6 +14,8 @@ public class Account {
     @GeneratedValue(generator="my_seq1")
     @SequenceGenerator(name="my_seq1",sequenceName="account_id_account_seq", allocationSize=1)
     private Long id_account;
+
+    private String iban;
     
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="id_owner")
@@ -53,6 +55,14 @@ public class Account {
         return owner;
     }
 
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
+
     public void setOwner(Person owner) {
         this.owner = owner;
     }
@@ -81,6 +91,7 @@ public class Account {
         Account account = (Account) o;
 
         if (id_account != null ? !id_account.equals(account.id_account) : account.id_account != null) return false;
+        if (iban != null ? !iban.equals(account.iban) : account.iban != null) return false;
         if (owner != null ? !owner.equals(account.owner) : account.owner != null) return false;
         if (cards != null ? !cards.equals(account.cards) : account.cards != null) return false;
         return balance != null ? balance.equals(account.balance) : account.balance == null;
@@ -90,6 +101,7 @@ public class Account {
     @Override
     public int hashCode() {
         int result = id_account != null ? id_account.hashCode() : 0;
+        result = 31 * result + (iban != null ? iban.hashCode() : 0);
         result = 31 * result + (owner != null ? owner.hashCode() : 0);
         result = 31 * result + (cards != null ? cards.hashCode() : 0);
         result = 31 * result + (balance != null ? balance.hashCode() : 0);
@@ -100,6 +112,7 @@ public class Account {
     public String toString() {
         return "Account{" +
                 "id_account=" + id_account +
+                ", iban='" + iban + '\'' +
                 ", balance=" + balance +
                 '}';
     }
