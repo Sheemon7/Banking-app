@@ -11,11 +11,11 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne (cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_card_type")
-    private CardType card_type;    
-    
-    @ManyToOne
+    private CardType card_type;
+
+    @ManyToOne (cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name="id_account")
     private Account account;
     
@@ -72,7 +72,6 @@ public class Card {
 
         if (id != null ? !id.equals(card.id) : card.id != null) return false;
         if (card_type != null ? !card_type.equals(card.card_type) : card.card_type != null) return false;
-        if (account != null ? !account.equals(card.account) : card.account != null) return false;
         return withdrawalLimit != null ? withdrawalLimit.equals(card.withdrawalLimit) : card.withdrawalLimit == null;
 
     }

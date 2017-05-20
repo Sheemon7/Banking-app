@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class ATM {
 
     @Id
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name="id_payment_place")
     private PaymentPlace paymentPlace;
     

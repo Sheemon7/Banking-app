@@ -24,10 +24,10 @@ public class Person {
     @Column(nullable=false)
     private String adress;
 
-    @OneToMany(mappedBy="owner", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy="owner", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Account> accounts;
 
-    @OneToMany(mappedBy="person", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy="person", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Trader> traders;
 
     public Person() {}
@@ -120,8 +120,6 @@ public class Person {
         result = 31 * result + (second_name != null ? second_name.hashCode() : 0);
         result = 31 * result + pin;
         result = 31 * result + (adress != null ? adress.hashCode() : 0);
-        result = 31 * result + (accounts != null ? accounts.hashCode() : 0);
-        result = 31 * result + (traders != null ? traders.hashCode() : 0);
         return result;
     }
 

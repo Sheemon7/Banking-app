@@ -11,13 +11,13 @@ public class PaymentPlace {
     @SequenceGenerator(name="my_seq2",sequenceName="paymentplace_id_paymnet_place_seq", allocationSize=1)
     private long id_payment_place;
     
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<CardType> accepts;
     
-    @OneToOne(mappedBy="paymentPlace") 
+    @OneToOne(mappedBy="paymentPlace", fetch = FetchType.EAGER)
     private ATM atm;
     
-    @OneToOne(mappedBy="paymentPlace") 
+    @OneToOne(mappedBy="paymentPlace", fetch = FetchType.EAGER)
     private Trader trader;
 
     public PaymentPlace() {

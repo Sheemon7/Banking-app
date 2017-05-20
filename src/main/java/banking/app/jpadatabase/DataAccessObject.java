@@ -1,14 +1,12 @@
 package banking.app.jpadatabase;
 
+import banking.app.entities.PaymentPlace;
 import banking.app.entities.Person;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.util.List;
 
-public abstract class DataAccessObject<E> {
+abstract class DataAccessObject<E> {
 
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence.createEntityManagerFactory("PersistenceUnit");
     static final EntityManager ENTITY_MANAGER = ENTITY_MANAGER_FACTORY.createEntityManager();
@@ -16,8 +14,13 @@ public abstract class DataAccessObject<E> {
 
     private Class<E> classType;
 
-    public DataAccessObject(Class<E> classType) {
+    DataAccessObject(Class<E> classType) {
         this.classType = classType;
+    }
+
+    public void dropAll() {
+        StoredProcedureQuery storedProceure = ENTITY_MANAGER.createStoredProcedureQuery("drop_all");
+        storedProceure.execute();
     }
 
     public void rollback() {

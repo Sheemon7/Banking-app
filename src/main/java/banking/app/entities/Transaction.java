@@ -13,12 +13,12 @@ public class Transaction {
     @GeneratedValue(generator="my_seq3")
     @SequenceGenerator(name="my_seq3",sequenceName="transaction_id_transaction_seq", allocationSize=1)
     private Long id_transaction;
-    
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_payment_place")
     private PaymentPlace sender;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_account")
     private Account receiver;
     

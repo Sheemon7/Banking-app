@@ -15,10 +15,10 @@ public class CardType {
     @Column(nullable = false, unique = true, length = 100)
     private String typeName;
     
-    @OneToMany(mappedBy = "card_type")
+    @OneToMany(mappedBy = "card_type", fetch = FetchType.EAGER)
     private List<Card> cards;
     
-    @ManyToMany(mappedBy = "accepts")
+    @ManyToMany(mappedBy = "accepts", fetch = FetchType.EAGER)
     private List<PaymentPlace> acceptedAt;
 
     public CardType() {

@@ -31,7 +31,9 @@ CREATE TABLE Account (
   balance NUMERIC   NOT NULL DEFAULT 0 CHECK (balance >= 0),  
 PRIMARY KEY(id_account)  ,
   FOREIGN KEY(id_owner)
-    REFERENCES Person(id_person));
+    REFERENCES Person(id_person)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 CREATE TABLE ATM (
   id_payment_place INTEGER   NOT NULL ,

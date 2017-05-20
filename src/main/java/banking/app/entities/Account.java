@@ -15,7 +15,7 @@ public class Account {
     @SequenceGenerator(name="my_seq1",sequenceName="account_id_account_seq", allocationSize=1)
     private Long id_account;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="id_owner")
     private Person owner;
     
