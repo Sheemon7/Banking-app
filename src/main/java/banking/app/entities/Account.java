@@ -1,5 +1,6 @@
 package banking.app.entities;
 
+import javax.persistence.*;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
@@ -8,17 +9,26 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Random;
-import javax.persistence.*;
 
 @Entity
-@Table(name="account")
+@NamedQueries({
+        @NamedQuery(
+                name = "Account.getAverageBalance",
+                query = "SELECT AVG(a.balance) FROM Account a"
+        ),
+        @NamedQuery(
+                name = "Account.getNumberOfRich",
+                query = "SELECT COUNT(a) FROM Account a WHERE a.balance > :threshold"
+        )
+})
+@Table(name = "account")
 public class Account {
-    
+
     private static final BigDecimal DEFAULT_BALANCE = BigDecimal.ZERO;
-    
-    @Id 
-    @GeneratedValue(generator="my_seq1")
-    @SequenceGenerator(name="my_seq1",sequenceName="account_id_account_seq", allocationSize=1)
+
+    @Id
+    @GeneratedValue(generator = "my_seq1")
+    @SequenceGenerator(name = "my_seq1", sequenceName = "account_id_account_seq", allocationSize = 1)
     private Long id_account;
 
     @Column
@@ -31,12 +41,12 @@ public class Account {
     private String password;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name="id_owner")
+    @JoinColumn(name = "id_owner")
     private Person owner;
-    
-    @OneToMany(mappedBy="account")
+
+    @OneToMany(mappedBy = "account")
     private List<Card> cards;
-    
+
     @Column(nullable = false)
     private BigDecimal balance;
 

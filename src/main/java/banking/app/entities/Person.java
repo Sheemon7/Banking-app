@@ -5,6 +5,11 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="person")
+@NamedQuery(
+        name = "Person.getTheRichestPerson",
+        query = "SELECT p.first_name, p.second_name, SUM(a.balance) FROM " +
+                "Person p JOIN Account a ON p = a.owner GROUP BY p.id_person ORDER BY SUM(a.balance) DESC"
+    )
 public class Person {
 
     @Id

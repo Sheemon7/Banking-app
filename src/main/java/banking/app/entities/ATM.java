@@ -1,10 +1,17 @@
 package banking.app.entities;
 
+import banking.app.jpadatabase.PaymentPlaceDAO;
+import banking.app.util.*;
+
 import java.math.BigDecimal;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "ATM")
+@SqlResultSetMapping(name="ATMResult", classes = {
+        @ConstructorResult(targetClass = ATM.class,
+                columns = {@ColumnResult(name="id_payment_place"), @ColumnResult(name="balance"), @ColumnResult(name="maxwithdrawal")})
+})
 public class ATM {
 
     private static final BigDecimal DEFAULT_BALANCE = new BigDecimal("100000");
@@ -33,6 +40,16 @@ public class ATM {
 
     private ATM(PaymentPlace paymentPlace, BigDecimal balance, BigDecimal maxWithdrawal) {
         this.paymentPlace = paymentPlace;
+        this.balance = balance;
+        this.maxWithdrawal = maxWithdrawal;
+    }
+
+    public ATM(Long idPaymentPlace, BigDecimal balance, BigDecimal maxWithdrawal) {
+        try {
+            this.paymentPlace = new PaymentPlaceDAO().getEntity(idPaymentPlace);
+        } catch (banking.app.util.EntityNotFoundException e) {
+            e.printStackTrace();
+        }
         this.balance = balance;
         this.maxWithdrawal = maxWithdrawal;
     }

@@ -4,6 +4,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="trader")
+@SqlResultSetMapping(name="TraderResult", classes = {
+        @ConstructorResult(targetClass = Trader.class,
+                columns = {@ColumnResult(name="address"), @ColumnResult(name="balance"), @ColumnResult(name="maxwithdrawal")})
+})
 public class Trader {
     
     @Id

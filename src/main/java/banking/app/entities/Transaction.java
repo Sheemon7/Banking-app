@@ -14,7 +14,7 @@ public class Transaction {
     private Long id_transaction;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_payment_place")
+    @JoinColumn(name = "id_card")
     private Card sender;
     
     @ManyToOne(fetch = FetchType.EAGER)

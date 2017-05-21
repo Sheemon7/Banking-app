@@ -5,6 +5,9 @@ import banking.app.entities.Account;
 import banking.app.util.EntityNotFoundException;
 import banking.app.util.IncorrectAccountPasswordException;
 
+import javax.persistence.NamedQuery;
+import javax.persistence.Query;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -30,5 +33,16 @@ public class AccountDAO extends DataAccessObject<Account>{
             LOG.info("Login unsuccessful for " + id);
             throw new IncorrectAccountPasswordException(id);
         }
+    }
+
+    public BigDecimal getAverageBalance() {
+        Query q = ENTITY_MANAGER.createNamedQuery("Account.getAverageBalance");
+        return BigDecimal.valueOf((Double) q.getSingleResult());
+    }
+
+    public long getNumberOfRich(BigDecimal threshold) {
+        Query q = ENTITY_MANAGER.createNamedQuery("Account.getNumberOfRich");
+        q.setParameter("threshold", threshold);
+        return (Long) q.getSingleResult();
     }
 }
