@@ -44,6 +44,7 @@ public class Main {
         Date begin = Date.valueOf(LocalDate.of(2017, 5, 1));
         Date end = Date.valueOf(LocalDate.of(2017, 6, 1));
         BigDecimal multiplier = new BigDecimal("0.01");
+        System.out.println("Updating bonuses between " + begin + " and " + end) ;
         da.updateBonuses(begin, end, multiplier);
     }
 }
