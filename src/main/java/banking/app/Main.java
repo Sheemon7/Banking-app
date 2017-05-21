@@ -3,6 +3,8 @@ package banking.app;
 import banking.app.jpadatabase.*;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.time.LocalDate;
 
 public class Main {
     
@@ -12,33 +14,13 @@ public class Main {
         ATMDAO atmDAO = new ATMDAO();
         TraderDAO traderDAO = new TraderDAO();
         TransactionDAO transactionDAO = new TransactionDAO();
+        CardTypeDAO cardTypeDAO = new CardTypeDAO();
 
         DatabaseAccess da = new DatabaseAccess();
         // smaze triggery! pro uplny restart
 //        da.dropAll();
 //        da.truncateAll();
         da.updateAllProcedures();
-//
-//        Account a1 = new Account("heslo1", new Person("simon", "mandlik", 1, "kladno"));
-//        System.out.println(a1.getPassword());
-//        accountDAO.saveEntity(a1);
-//        long id = a1.getId_account();
-//        a1 = null;
-//
-//        try {
-//            a1 = accountDAO.loginAccount(id, "heslospatne");
-//        } catch (IncorrectAccountPasswordException | EntityNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println(a1);
-//        try {
-//            a1 = accountDAO.loginAccount(id, "heslo1");
-//        } catch (IncorrectAccountPasswordException | EntityNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println(a1);
-
-
 
         // agregacni sestavy demo
         // named query
@@ -54,8 +36,14 @@ public class Main {
         int k = 1;
         traderDAO.printKRichestTraders(k);
         System.out.println(transactionDAO.getSuspiciousTransactions());
+        System.out.println(cardTypeDAO.getMostCashflownCardType());
+        System.out.println(cardTypeDAO.getMostUsedCardType());
 
-        // test candidate - FOR EVERY ACCOUNT THAT HAS PAID OR WITHDRAWN WITH ANY CARD IN THE PREVIOUS MONTH,
+        // test candidate - FOR EVERY ACCOUNT THAT HAS PAID OR WITHDRAWN WITH ANY CARD IN THE GIVEN INTERVAL AT LEAST THREE TIMES,
         // ADD 100 TO THEIR ACCOUNT
+        Date begin = Date.valueOf(LocalDate.of(2017, 5, 1));
+        Date end = Date.valueOf(LocalDate.of(2017, 6, 1));
+        BigDecimal multiplier = new BigDecimal("0.01");
+        da.updateBonuses(begin, end, multiplier);
     }
 }

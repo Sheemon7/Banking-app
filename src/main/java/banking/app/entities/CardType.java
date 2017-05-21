@@ -10,7 +10,7 @@ public class CardType {
     @Id
     @GeneratedValue(generator="my_seq4")
     @SequenceGenerator(name="my_seq4",sequenceName="cardtype_id_card_type_seq", allocationSize=1)
-    private Long id;
+    private Long id_card_type;
     
     @Column(nullable = false, unique = true, length = 100)
     private String typeName;
@@ -24,12 +24,12 @@ public class CardType {
     public CardType() {
     }
     
-    public Long getId() {
-        return id;
+    public Long getId_card_type() {
+        return id_card_type;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_card_type(Long id) {
+        this.id_card_type = id;
     }
 
     public CardType(String typeName) {
@@ -67,7 +67,7 @@ public class CardType {
 
         CardType cardType = (CardType) o;
 
-        if (id != null ? !id.equals(cardType.id) : cardType.id != null) return false;
+        if (id_card_type != null ? !id_card_type.equals(cardType.id_card_type) : cardType.id_card_type != null) return false;
         if (typeName != null ? !typeName.equals(cardType.typeName) : cardType.typeName != null) return false;
         if (cards != null ? !cards.equals(cardType.cards) : cardType.cards != null) return false;
         return acceptedAt != null ? acceptedAt.equals(cardType.acceptedAt) : cardType.acceptedAt == null;
@@ -76,7 +76,7 @@ public class CardType {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = id_card_type != null ? id_card_type.hashCode() : 0;
         result = 31 * result + (typeName != null ? typeName.hashCode() : 0);
         result = 31 * result + (cards != null ? cards.hashCode() : 0);
         result = 31 * result + (acceptedAt != null ? acceptedAt.hashCode() : 0);
@@ -86,7 +86,7 @@ public class CardType {
     @Override
     public String toString() {
         return "CardType{" +
-                "id=" + id +
+                "id=" + id_card_type +
                 ", typeName='" + typeName + '\'' +
                 '}';
     }
