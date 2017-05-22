@@ -10,18 +10,18 @@ import java.time.LocalDate;
 public class Main {
     
     public static void main(String[] args) {
-        PersonDAO personDAO = new PersonDAO();
-        AccountDAO accountDAO = new AccountDAO();
-        ATMDAO atmDAO = new ATMDAO();
-        TraderDAO traderDAO = new TraderDAO();
-        TransactionDAO transactionDAO = new TransactionDAO();
-        CardTypeDAO cardTypeDAO = new CardTypeDAO();
+        PersonDAO personDAO = PersonDAO.getInstance();
+        AccountDAO accountDAO = AccountDAO.getInstance();
+        ATMDAO atmDAO = ATMDAO.getInstance();
+        TraderDAO traderDAO = TraderDAO.getInstance();
+        TransactionDAO transactionDAO = TransactionDAO.getInstance();
+        CardTypeDAO cardTypeDAO = CardTypeDAO.getInstance();
 
         DatabaseAccess da = new DatabaseAccess();
 //        da.updateAllProcedures();
 //        da.dropAll();
-//        da.truncateAll();
-//        DataGenerator.generateData(10);
+        da.truncateAll();
+        DataGenerator.generateData(10);
 
         // agregacni sestavy demo
         // named query

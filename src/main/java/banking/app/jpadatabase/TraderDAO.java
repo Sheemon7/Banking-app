@@ -8,7 +8,13 @@ import java.util.List;
 
 public class TraderDAO extends DataAccessObject<Trader>{
 
-    public TraderDAO() {
+    private static final TraderDAO instance = new TraderDAO();
+
+    public static TraderDAO getInstance() {
+        return instance;
+    }
+
+    private TraderDAO() {
         super(Trader.class);
     }
 

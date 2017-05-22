@@ -10,7 +10,13 @@ import java.util.List;
 
 public class PersonDAO extends DataAccessObject<Person> {
 
-    public PersonDAO() {
+    private static final PersonDAO instance = new PersonDAO();
+
+    public static PersonDAO getInstance() {
+        return instance;
+    }
+
+    private PersonDAO() {
         super(Person.class);
     }
 

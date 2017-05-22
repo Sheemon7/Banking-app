@@ -1,9 +1,8 @@
 package banking.app;
 import banking.app.entities.Account;
+import banking.app.entities.PaymentPlace;
 import banking.app.entities.Transaction;
-import banking.app.jpadatabase.AccountDAO;
-import banking.app.jpadatabase.PersonDAO;
-import banking.app.jpadatabase.TransactionDAO;
+import banking.app.jpadatabase.*;
 import banking.app.util.EntityNotFoundException;
 import banking.app.util.IncorrectAccountPasswordException;
 import javafx.application.Application;
@@ -25,18 +24,13 @@ import javafx.scene.text.Text;
 
 import java.math.BigDecimal;
 
-/**
- * Created by Tomas on 5/20/2017.
- */
-
-
 public class Gui extends Application{
 
     private Scene sceneLogin, sceneOverview, sceneAccountDecision;
     private TableView table = new TableView();
-    private TransactionDAO transactionDAO = new TransactionDAO();
-    private PersonDAO personDAO = new PersonDAO();
-    private AccountDAO accountDAO = new AccountDAO();
+    private TransactionDAO transactionDAO = TransactionDAO.getInstance();
+    private PersonDAO personDAO = PersonDAO.getInstance();
+    private AccountDAO accountDAO = AccountDAO.getInstance();
     private Account loggedAccount = null;
 
 

@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -16,14 +18,14 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class DataGenerator extends DatabaseAccess {
-    private static final AccountDAO ACCOUNT_DAO = new AccountDAO();
-    private static final ATMDAO ATM_DAO = new ATMDAO();
-    private static final CardDAO CARD_DAO = new CardDAO();
-    private static final CardTypeDAO CARD_TYPE_DAO = new CardTypeDAO();
-    private static final PaymentPlaceDAO PAYMENT_PLACE_DAO = new PaymentPlaceDAO();
-    private static final PersonDAO PERSON_DAO = new PersonDAO();
-    private static final TraderDAO TRADER_DAO = new TraderDAO();
-    private static final TransactionDAO TRANSACTION_DAO = new TransactionDAO();
+    private static final AccountDAO ACCOUNT_DAO = AccountDAO.getInstance();
+    private static final ATMDAO ATM_DAO = ATMDAO.getInstance();
+    private static final CardDAO CARD_DAO = CardDAO.getInstance();
+    private static final CardTypeDAO CARD_TYPE_DAO = CardTypeDAO.getInstance();
+    private static final PaymentPlaceDAO PAYMENT_PLACE_DAO = PaymentPlaceDAO.getInstance();
+    private static final PersonDAO PERSON_DAO = PersonDAO.getInstance();
+    private static final TraderDAO TRADER_DAO = TraderDAO.getInstance();
+    private static final TransactionDAO TRANSACTION_DAO = TransactionDAO.getInstance();
 
     private static final Random RANDOM = new Random(0L);
 
@@ -88,8 +90,8 @@ public class DataGenerator extends DatabaseAccess {
         List<Person> persons = PERSON_DAO.getEntitiesList();
         for (int i = 0; i < count; i++) {
             Person p = persons.get(RANDOM.nextInt(persons.size()));
-            BigDecimal balance = new BigDecimal(Math.random()).multiply(MAX_INIT_BALANCE);
-            Account a = new Account("DUMMYPASSWORD", p, balance);
+            BigDecimal balance = new BigDecimal(Math.random()).multiply(MAX_INIT_BALANCE).round(new MathContext(0, RoundingMode.HALF_UP));
+            Account a = new Account("PASSWORD", p, balance);
             ACCOUNT_DAO.saveEntity(a);
         }
     }
@@ -120,7 +122,7 @@ public class DataGenerator extends DatabaseAccess {
 
     private static void generateATMS(int count) {
         for (int i = 0; i < count; i++) {
-            BigDecimal balance = new BigDecimal(Math.random()).multiply(MAX_INIT_BALANCE);
+            BigDecimal balance = new BigDecimal(Math.random()).multiply(MAX_INIT_BALANCE).round(new MathContext(0, RoundingMode.HALF_UP));
             ATM atm = new ATM(ADDRESSES.get(RANDOM.nextInt(ADDRESSES.size())), balance,
                     MAX_WITHDRAWALS_ATMS.get(RANDOM.nextInt(MAX_WITHDRAWALS_ATMS.size())));
             ATM_DAO.saveEntity(atm);
@@ -154,7 +156,7 @@ public class DataGenerator extends DatabaseAccess {
             } while (!atm.getPaymentPlace().getAccepts().contains(c.getCard_type()));
 
             // ATM transactions have null for account and negative remainders
-            BigDecimal withdrew = new BigDecimal(Math.random()).multiply(atm.getMaxWithdrawal());
+            BigDecimal withdrew = new BigDecimal(Math.random()).multiply(atm.getMaxWithdrawal()).round(new MathContext(2, RoundingMode.HALF_UP));
             withdrew = withdrew.multiply(new BigDecimal("-1"));
             Long d = BEGIN_TRANSACTION_DATE.getTime() + ((long) (RANDOM.nextDouble() * (END_TRANSACTION_DATE.getTime() - BEGIN_TRANSACTION_DATE.getTime())));
             Date date = new Date(d);
@@ -174,13 +176,13 @@ public class DataGenerator extends DatabaseAccess {
                 t = traders.get(RANDOM.nextInt(traders.size()));
             } while (!t.getPaymentPlace().getAccepts().contains(c.getCard_type()));
 
-            BigDecimal paid = new BigDecimal(Math.random()).multiply(c.getWithdrawalLimit());
+            BigDecimal paid = new BigDecimal(Math.random()).multiply(c.getWithdrawalLimit()).round(new MathContext(2, RoundingMode.HALF_UP));
             Long d = BEGIN_TRANSACTION_DATE.getTime() + ((long) (RANDOM.nextDouble() * (END_TRANSACTION_DATE.getTime() - BEGIN_TRANSACTION_DATE.getTime())));
             Date date = new Date(d);
 
             String messageReceiver = MESSAGES.get(RANDOM.nextInt(MESSAGES.size()));
             String messageSender = MESSAGES.get(RANDOM.nextInt(MESSAGES.size()));
-            Transaction tr = new Transaction(c, null, paid, messageSender, messageReceiver,date);
+            Transaction tr = new Transaction(c, null, paid, messageSender, messageReceiver, date);
             TRANSACTION_DAO.saveEntity(tr);
         }
 
