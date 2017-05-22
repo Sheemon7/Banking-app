@@ -1,6 +1,7 @@
 package banking.app;
 
 import banking.app.jpadatabase.*;
+import javafx.application.Application;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -54,5 +55,7 @@ public class Main {
         BigDecimal multiplier = new BigDecimal("0.01");
         System.out.println("Updating bonuses between " + begin + " and " + end) ;
         da.updateBonuses(begin, end, multiplier);
+
+        Application.launch(Gui.class,args);
     }
 }
