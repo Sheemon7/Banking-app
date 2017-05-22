@@ -17,6 +17,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -58,18 +59,21 @@ public class Gui extends Application {
         sceneNewUserAccount = createNewUserAccountScene(primaryStage);
         sceneExistingUserAccount = createExistingUserAccountScene(primaryStage);
         scenePayment = createCardPaymentScene(primaryStage);
-        primaryStage.setScene(sceneLogin);
+        primaryStage.setScene(sceneOverview);
         primaryStage.show();
     }
 
     public Scene createOverviewScene(Stage stage) {
         GridPane grid = new GridPane();
+        Scene scene = new Scene(grid, 800, 600);
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
-        Text loginTitle = new Text("Enter your bank account and password");
+        Text loginTitle = new Text("Account Overview");
         loginTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(loginTitle, 1, 0, 3, 1);
+
+
 
         ColumnConstraints column0 = new ColumnConstraints();
         column0.setPercentWidth(5);
@@ -104,11 +108,12 @@ public class Gui extends Application {
 
         grid.add(table, 1, 1, 4, 3);
 
-        return new Scene(grid, 800, 600);
+        return scene;
     }
 
     public Scene createLoginScene(Stage stage) {
         GridPane grid = new GridPane();
+        Scene scene = new Scene(grid, 800, 600);
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
@@ -143,7 +148,7 @@ public class Gui extends Application {
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 6);
 
-        Scene scene = new Scene(grid, 800, 600);
+
 
         btn.setOnAction(e -> {
             try {
@@ -172,6 +177,7 @@ public class Gui extends Application {
 
     public Scene createAccountDecisionScene(Stage stage) {
         GridPane grid = new GridPane();
+        Scene scene = new Scene(grid, 800, 600);
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
@@ -211,7 +217,7 @@ public class Gui extends Application {
             stage.setScene(sceneLogin);
         });
 
-        Scene scene = new Scene(grid, 800, 600);
+
         return scene;
     }
 
@@ -221,6 +227,7 @@ public class Gui extends Application {
 
     public Scene createCardPaymentScene(Stage stage){
         GridPane grid = new GridPane();
+        Scene scene = new Scene(grid, 800, 600);
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
@@ -256,17 +263,36 @@ public class Gui extends Application {
         TextField textField2 = new TextField();
         grid.add(textField2,1,5);
 
-
-        Button btn = new Button("Create Account");
+        Button btn = new Button("Cancel and go back");
         HBox hbBtn = new HBox(10);
-        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.setAlignment(Pos.BOTTOM_LEFT);
         hbBtn.getChildren().add(btn);
-        grid.add(hbBtn, 1, 4);
+        grid.add(hbBtn, 0, 6);
+
+        Button btn1 = new Button("Create account");
+        HBox hbBtn1 = new HBox(10);
+        hbBtn1.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn1.getChildren().add(btn1);
+        grid.add(hbBtn1, 1, 6);
 
         btn.setOnAction(e->{
-            Long targetAccount = Long.parseLong(numField1.getText());
-            BigDecimal amount = new BigDecimal(numField2.getText());
-            Long cardUsed = Long.parseLong(numField3.getText());
+            clearAllFields(scene);
+            stage.setScene(sceneOverview);
+        });
+
+        btn1.setOnAction(e->{
+            Long targetAccount = null;
+            if(numField1.getText().length() != 0) {
+                targetAccount = Long.parseLong(numField1.getText());
+            }
+            BigDecimal amount = null;
+            if(numField2.getText().length() != 0) {
+                amount = new BigDecimal(numField2.getText());
+            }
+            Long cardUsed = null;
+            if(numField3.getText().length() != 0) {
+                cardUsed = Long.parseLong(numField3.getText());
+            }
             String messageToReceiver = textField1.getText();
             String messageToSender = textField2.getText();
 
@@ -279,13 +305,14 @@ public class Gui extends Application {
 
 
 
-        Scene scene = new Scene(grid, 800, 600);
+
         return scene;
     }
 
 
     public Scene createExistingUserAccountScene(Stage stage) {
         GridPane grid = new GridPane();
+        Scene scene = new Scene(grid, 800, 600);
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
@@ -326,6 +353,7 @@ public class Gui extends Application {
         grid.add(errorText,1,5);
 
         btn.setOnAction(e->{
+            clearAllFields(scene);
             stage.setScene(sceneAccountDecision);
         });
 
@@ -353,7 +381,10 @@ public class Gui extends Application {
                 if (owner != null) {
                     Account accountToAdd = new Account(password, owner, amount);
                     accountDAO.saveEntity(accountToAdd);
-                    stage.setScene(sceneLogin);
+//                    stage.setScene(sceneLogin);
+                    errorText.setText("Account successfully created\n" +
+                            "ID: " + accountToAdd.getId_account() + "\n" +
+                            "Password " + accountToAdd.getPassword());
                 }
             }else{
                 errorText.setFill(Color.FIREBRICK);
@@ -361,12 +392,13 @@ public class Gui extends Application {
             }
         });
 
-        Scene scene = new Scene(grid, 800, 600);
+
         return scene;
     }
 
     public Scene createNewUserAccountScene(Stage stage) {
         GridPane grid = new GridPane();
+        Scene scene = new Scene(grid, 800, 600);
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
@@ -418,6 +450,7 @@ public class Gui extends Application {
 
 
         btn.setOnAction(e->{
+            clearAllFields(scene);
             stage.setScene(sceneAccountDecision);
         });
 
@@ -438,15 +471,26 @@ public class Gui extends Application {
                 personDAO.saveEntity(personToAdd);
                 Account accountToAdd = new Account(password, personToAdd, amount);
                 accountDAO.saveEntity(accountToAdd);
-                stage.setScene(sceneLogin);
+                errorText.setText("Account successfully created\n" +
+                        "ID: " + accountToAdd.getId_account() + "\n" +
+                        "Password " + accountToAdd.getPassword());
+//                stage.setScene(sceneLogin);
             }else{
                 errorText.setFill(Color.FIREBRICK);
                 errorText.setText("Please enter all information correctly");
             }
         });
 
-        Scene scene = new Scene(grid, 800, 600);
+
         return scene;
+    }
+
+    public void clearAllFields(Scene scene){
+        for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
+            if (node instanceof TextField) {
+                ((TextField)node).setText("");
+            }
+        }
     }
 
 }
