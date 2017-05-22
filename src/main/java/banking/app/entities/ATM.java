@@ -54,6 +54,7 @@ public class ATM {
         this.maxWithdrawal = maxWithdrawal;
     }
 
+
     public PaymentPlace getPaymentPlace() {
         return paymentPlace;
     }

@@ -31,27 +31,27 @@ public class Trader {
         this.person = person;
     }
 
-    public PaymentPlace getId_payment_place() {
+    public PaymentPlace getPaymentPlace() {
         return paymentPlace;
     }
 
-    public void setId_payment_place(PaymentPlace paymentPlace) {
+    public void setPaymentPlace(PaymentPlace paymentPlace) {
         this.paymentPlace = paymentPlace;
     }
 
-    public Account getId_account() {
+    public Account getAccount() {
         return account;
     }
 
-    public void setId_account(Account account) {
+    public void setAccount(Account account) {
         this.account = account;
     }
 
-    public Person getId_person() {
+    public Person getPerson() {
         return person;
     }
 
-    public void setId_person(Person person) {
+    public void setPerson(Person person) {
         this.person = person;
     }
 

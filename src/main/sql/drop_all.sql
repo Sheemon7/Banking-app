@@ -6,7 +6,7 @@ BEGIN
   ALTER TABLE public.transaction
     DROP CONSTRAINT fk_transaction_id_account;
   ALTER TABLE public.transaction
-    DROP CONSTRAINT fk_transaction_id_payment_place;
+    DROP CONSTRAINT fk_transaction_id_card;
   ALTER TABLE public.trader
     DROP CONSTRAINT fk_trader_id_account;
   ALTER TABLE public.trader

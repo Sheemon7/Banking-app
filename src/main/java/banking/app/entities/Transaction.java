@@ -36,17 +36,17 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(Card sender, Account receiver, BigDecimal amount, Date dueDate) {
-        this(sender, receiver, amount, "", "", dueDate);
+    public Transaction(Card sender, Account receiver, BigDecimal amount, Date date) {
+        this(sender, receiver, amount, "", "", date);
     }
 
-    public Transaction(Card sender, Account receiver, BigDecimal amount, String messageToSender, String messageToReceiver, Date dueDate) {
+    public Transaction(Card sender, Account receiver, BigDecimal amount, String messageToSender, String messageToReceiver, Date date) {
         this.sender = sender;
         this.receiver = receiver;
         this.amount = amount;
         this.messageToSender = messageToSender;
         this.messageToReceiver = messageToReceiver;
-        this.date = dueDate;
+        this.date = date;
     }
 
     public Long getId_transaction() {

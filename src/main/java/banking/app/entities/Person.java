@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class Person {
 
     @Id
-    @GeneratedValue(generator="my_seq")
+    @GeneratedValue(generator="my_seq", strategy = GenerationType.IDENTITY)
     @SequenceGenerator(name="my_seq",sequenceName="person_id_person_seq", allocationSize=1)
     private Long id_person;
 
