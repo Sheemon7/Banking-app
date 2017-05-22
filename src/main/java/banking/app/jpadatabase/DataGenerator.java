@@ -64,9 +64,9 @@ public class DataGenerator extends DatabaseAccess {
         generateCardTypes();
         generateAccounts(2 * count);
         generateCards(5 * count);
-        generateTraders(count);
-        generateATMS(count);
-        generateTransactions(count * 100);
+//        generateTraders(count);
+//        generateATMS(count);
+//        generateTransactions(count * 100);
     }
 
     private static void generatePersons(int count) {
@@ -91,7 +91,7 @@ public class DataGenerator extends DatabaseAccess {
         for (int i = 0; i < count; i++) {
             Person p = persons.get(RANDOM.nextInt(persons.size()));
             BigDecimal balance = new BigDecimal(Math.random()).multiply(MAX_INIT_BALANCE).round(new MathContext(0, RoundingMode.HALF_UP));
-            Account a = new Account("PASSWORD", p, balance);
+            Account a = new Account("DUMMY_PASSWORD", p, balance);
             ACCOUNT_DAO.saveEntity(a);
         }
     }
@@ -133,7 +133,9 @@ public class DataGenerator extends DatabaseAccess {
     private static PaymentPlace generatePaymentPlace() {
         List<CardType> cardTypes = CARD_TYPE_DAO.getEntitiesList();
         PaymentPlace pp = new PaymentPlace(ADDRESSES.get(RANDOM.nextInt(ADDRESSES.size())));
+        System.out.println(cardTypes);
         Collections.shuffle(cardTypes);
+        System.out.println(cardTypes);
         for (int i = 0; i < RANDOM.nextInt(cardTypes.size()); i++) {
             pp.getAccepts().add(cardTypes.get(i));
         }

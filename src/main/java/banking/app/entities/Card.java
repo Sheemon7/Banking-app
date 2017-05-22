@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class Card {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id_card;
 
     @ManyToOne (cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)

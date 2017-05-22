@@ -1,5 +1,7 @@
 package banking.app;
 
+import banking.app.entities.Account;
+import banking.app.entities.Person;
 import banking.app.jpadatabase.*;
 import javafx.application.Application;
 
@@ -10,18 +12,22 @@ import java.time.LocalDate;
 public class Main {
     
     public static void main(String[] args) {
-//        PersonDAO personDAO = PersonDAO.getInstance();
-//        AccountDAO accountDAO = AccountDAO.getInstance();
+        PersonDAO personDAO = PersonDAO.getInstance();
+        AccountDAO accountDAO = AccountDAO.getInstance();
 //        ATMDAO atmDAO = ATMDAO.getInstance();
 //        TraderDAO traderDAO = TraderDAO.getInstance();
 //        TransactionDAO transactionDAO = TransactionDAO.getInstance();
 //        CardTypeDAO cardTypeDAO = CardTypeDAO.getInstance();
 //
-//        DatabaseAccess da = new DatabaseAccess();
+        DatabaseAccess da = new DatabaseAccess();
 ////        da.updateAllProcedures();
-////        da.dropAll();
-//        da.truncateAll();
-//        DataGenerator.generateData(10);
+//        da.dropAll();
+        da.truncateAll();
+        DataGenerator.generateData(10);
+
+//        Person p = new Person("a", "a", 3, "a");
+//        personDAO.saveEntity(p);
+
 
         // agregacni sestavy demo
         // named query

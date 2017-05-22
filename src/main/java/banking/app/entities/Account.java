@@ -61,7 +61,8 @@ public class Account {
         final Random r = new SecureRandom();
         byte[] salt = new byte[32];
         r.nextBytes(salt);
-        this.salt = new String(salt, StandardCharsets.UTF_8);
+        // POSTGRES DOESN'T ALLOW INSERTION OF \0000 - REPLACE IT
+        this.salt = replaceAllNulls(new String(salt, StandardCharsets.UTF_8));
         this.password = getSaltyPasswordHash(password);
         this.owner = owner;
         this.balance = balance;
@@ -71,7 +72,10 @@ public class Account {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] bytes = digest.digest((password + this.salt).getBytes("UTF-8"));
-            return new String(bytes, StandardCharsets.UTF_8);
+
+            String hash = new String(bytes, StandardCharsets.UTF_8);
+            // POSTGRES DOESN'T ALLOW INSERTION OF \0000 - REPLACE IT
+            return replaceAllNulls(hash);
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
             return null;
         }
@@ -170,5 +174,17 @@ public class Account {
                 ", owner=" + owner +
                 ", balance=" + balance +
                 '}';
+    }
+
+    private static String replaceAllNulls(String s) {
+        StringBuilder result = new StringBuilder();
+        for (char c : s.toCharArray()) {
+            if (c == 0x00) {
+                result.append("a");
+            } else {
+                result.append(c);
+            }
+        }
+        return result.toString();
     }
 }
