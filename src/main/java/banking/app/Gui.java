@@ -185,20 +185,30 @@ public class Gui extends Application {
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(btn);
-        grid.add(hbBtn, 1, 4);
+        grid.add(hbBtn, 0, 4);
 
-        Button btnAcc = new Button("Existing user");
-        HBox hbBtnAcc = new HBox(10);
-        hbBtnAcc.setAlignment(Pos.BOTTOM_RIGHT);
-        hbBtnAcc.getChildren().add(btnAcc);
-        grid.add(hbBtnAcc, 0, 4);
+        Button btn1 = new Button("Existing user");
+        HBox hbBtn1 = new HBox(10);
+        hbBtn1.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn1.getChildren().add(btn1);
+        grid.add(hbBtn1, 1, 4);
+
+        Button btn2 = new Button("Go back");
+        HBox hbBtn2 = new HBox(10);
+        hbBtn2.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn2.getChildren().add(btn2);
+        grid.add(hbBtn2, 2, 4);
 
         btn.setOnAction(e -> {
             stage.setScene(sceneNewUserAccount);
         });
 
-        btnAcc.setOnAction(e -> {
+        btn1.setOnAction(e -> {
             stage.setScene(sceneExistingUserAccount);
+        });
+
+        btn2.setOnAction(e ->{
+            stage.setScene(sceneLogin);
         });
 
         Scene scene = new Scene(grid, 800, 600);
@@ -300,6 +310,11 @@ public class Gui extends Application {
         PasswordField pwBox = new PasswordField();
         grid.add(pwBox, 1, 3);
 
+        Button btn = new Button("Go back");
+        HBox hbBtn = new HBox(10);
+        hbBtn.setAlignment(Pos.BOTTOM_LEFT);
+        hbBtn.getChildren().add(btn);
+        grid.add(hbBtn, 0, 4);
 
         Button btn1 = new Button("Create Account");
         HBox hbBtn1 = new HBox(10);
@@ -310,9 +325,19 @@ public class Gui extends Application {
         final Text errorText = new Text();
         grid.add(errorText,1,5);
 
+        btn.setOnAction(e->{
+            stage.setScene(sceneAccountDecision);
+        });
+
         btn1.setOnAction(e -> {
-            Long ownerId = Long.parseLong(numField1.getText());
-            BigDecimal amount = new BigDecimal(numField2.getText());
+            Long ownerId = null;
+            if(numField1.getText().length() != 0){
+                ownerId=Long.parseLong(numField1.getText());
+            }
+            BigDecimal amount = null;
+            if(numField2.getText().length() != 0) {
+                amount=new BigDecimal(numField2.getText());
+            }
             String password = pwBox.getText();
 
 
@@ -376,6 +401,11 @@ public class Gui extends Application {
         PasswordField pwBox = new PasswordField();
         grid.add(pwBox, 1, 5);
 
+        Button btn = new Button("Go back");
+        HBox hbBtn = new HBox(10);
+        hbBtn.setAlignment(Pos.BOTTOM_LEFT);
+        hbBtn.getChildren().add(btn);
+        grid.add(hbBtn, 0, 6);
 
         Button btn1 = new Button("Create Account");
         HBox hbBtn1 = new HBox(10);
@@ -384,13 +414,22 @@ public class Gui extends Application {
         grid.add(hbBtn1, 1, 6);
 
         final Text errorText = new Text();
-        grid.add(errorText,1,7);
+        grid.add(errorText,1,7,3,1);
+
+
+        btn.setOnAction(e->{
+            stage.setScene(sceneAccountDecision);
+        });
 
         btn1.setOnAction(e -> {
             String firstName = textField1.getText();
             String secondName = textField2.getText();
             String address = textField3.getText();
-            BigDecimal amount = new BigDecimal(numField1.getText());
+            BigDecimal amount = null;
+            if(numField1.getText().length() != 0){
+                amount = new BigDecimal(numField1.getText());
+
+            }
             String password = pwBox.getText();
 
 
