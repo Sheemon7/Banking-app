@@ -1,8 +1,6 @@
 package banking.app;
 
-import banking.app.entities.Account;
-import banking.app.entities.Person;
-import banking.app.entities.Transaction;
+import banking.app.entities.*;
 import banking.app.gui.NumberTextField;
 import banking.app.jpadatabase.AccountDAO;
 import banking.app.jpadatabase.CardDAO;
@@ -24,6 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -32,6 +31,7 @@ import javafx.scene.text.Text;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 
 /**
  * Created by Tomas on 5/20/2017.
@@ -59,7 +59,7 @@ public class Gui extends Application {
         sceneNewUserAccount = createNewUserAccountScene(primaryStage);
         sceneExistingUserAccount = createExistingUserAccountScene(primaryStage);
         scenePayment = createCardPaymentScene(primaryStage);
-        primaryStage.setScene(sceneOverview);
+        primaryStage.setScene(sceneLogin);
         primaryStage.show();
     }
 
@@ -69,44 +69,88 @@ public class Gui extends Application {
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
-        Text loginTitle = new Text("Account Overview");
-        loginTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        grid.add(loginTitle, 1, 0, 3, 1);
+
+        Text titleText = new Text("Account Overview");
+        titleText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+
+
+        VBox titleTextContainer = new VBox();
+        titleTextContainer.setPrefWidth(800);
+        titleTextContainer.getChildren().addAll(titleText);
+        titleTextContainer.setAlignment(Pos.CENTER);
+        grid.add(titleTextContainer, 0, 0, 3,1);
 
 
 
-        ColumnConstraints column0 = new ColumnConstraints();
-        column0.setPercentWidth(5);
-        ColumnConstraints column1 = new ColumnConstraints();
-        column1.setPercentWidth(90);
-        ColumnConstraints column2 = new ColumnConstraints();
-        column1.setPercentWidth(5);
+        if(loggedAccount != null){
+            Text accountIdText = new Text("Account ID: " + loggedAccount.getId_account());
+            accountIdText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
+            grid.add(accountIdText,1,1);
 
-        grid.getColumnConstraints().addAll(column0, column1, column2);
+            Text balanceText = new Text("Balance: " + loggedAccount.getBalance());
+            balanceText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
+            grid.add(balanceText,1,2);
+        }
+
+//        ColumnConstraints column0 = new ColumnConstraints();
+//        column0.setPercentWidth(5);
+//        ColumnConstraints column1 = new ColumnConstraints();
+//        column1.setPercentWidth(90);
+//        ColumnConstraints column2 = new ColumnConstraints();
+//        column1.setPercentWidth(5);
+
+//        grid.getColumnConstraints().addAll(column0, column1, column2);
 
         //create table
         table.setEditable(true);
-        TableColumn col1 = new TableColumn("First Name");
+        TableColumn col1 = new TableColumn("Card id");
         col1.setMinWidth(100);
         col1.setCellValueFactory(
-                new PropertyValueFactory<Transaction, String>("messageToSender"));
+                new PropertyValueFactory<Transaction, Long>("sender.getId_card()"));
 
-        TableColumn col2 = new TableColumn("Last Name");
+        TableColumn col2 = new TableColumn("Amount");
         col2.setMinWidth(100);
         col2.setCellValueFactory(
-                new PropertyValueFactory<Transaction, String>("messageToSender"));
+                new PropertyValueFactory<Transaction, BigDecimal>("amount"));
 
         TableColumn col3 = new TableColumn("Email");
         col3.setMinWidth(200);
         col3.setCellValueFactory(
                 new PropertyValueFactory<Transaction, String>("messageToSender"));
 
-        ObservableList<Transaction> transactions = FXCollections.observableArrayList(transactionDAO.getEntitiesList());
+//        ObservableList<Transaction> transactions = FXCollections.observableArrayList(transactionDAO.getEntitiesList());
+        Card cardtmp = new Card(new CardType(),new Account(),BigDecimal.ONE);
+        Transaction transtmp = new Transaction(cardtmp,new Account(), BigDecimal.ONE,new Date(20170101));
+        ObservableList<Transaction> transactions = FXCollections.observableArrayList(transtmp);
         table.setItems(transactions);
         table.getColumns().addAll(col1, col2, col3);
+        grid.add(table, 1, 3);
+
+        VBox buttonContainer = new VBox();
+
+        Button btn = new Button("New payment");
+        btn.setMaxWidth(Double.MAX_VALUE);
+        btn.setMinWidth(100.0);
+        Button btn1 = new Button("Card Overview");
+        btn1.setMaxWidth(Double.MAX_VALUE);
+        btn1.setMinWidth(100.0);
+        Button btn2 = new Button("Log out");
+        btn2.setMaxWidth(Double.MAX_VALUE);
+        btn2.setMinWidth(100.0);
+
+        buttonContainer.getChildren().addAll(btn,btn1,btn2);
+        grid.add(buttonContainer,2,3);
+
+        btn.setOnAction(e->{
+            stage.setScene(scenePayment);
+        });
 
 
-        grid.add(table, 1, 1, 4, 3);
+        btn2.setOnAction(e->{
+            stage.setScene(sceneLogin);
+        });
+
+
 
         return scene;
     }
@@ -161,6 +205,8 @@ public class Gui extends Application {
                 actiontarget.setText("Wrong password");
             }
             if (loggedAccount != null) {
+                clearAllFields(scene);
+                sceneOverview = createOverviewScene(stage);//updates the values in scene
                 stage.setScene(sceneOverview);
             } else {
                 actiontarget.setText("Wrong input");
@@ -169,6 +215,7 @@ public class Gui extends Application {
         });
 
         btnAcc.setOnAction(e -> {
+            clearAllFields(scene);
             stage.setScene(sceneAccountDecision);
         });
 
@@ -269,7 +316,7 @@ public class Gui extends Application {
         hbBtn.getChildren().add(btn);
         grid.add(hbBtn, 0, 6);
 
-        Button btn1 = new Button("Create account");
+        Button btn1 = new Button("Make payment");
         HBox hbBtn1 = new HBox(10);
         hbBtn1.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn1.getChildren().add(btn1);
@@ -381,10 +428,11 @@ public class Gui extends Application {
                 if (owner != null) {
                     Account accountToAdd = new Account(password, owner, amount);
                     accountDAO.saveEntity(accountToAdd);
+                    clearAllFields(scene);
 //                    stage.setScene(sceneLogin);
                     errorText.setText("Account successfully created\n" +
                             "ID: " + accountToAdd.getId_account() + "\n" +
-                            "Password " + accountToAdd.getPassword());
+                            "Password " + password);
                 }
             }else{
                 errorText.setFill(Color.FIREBRICK);
@@ -471,9 +519,10 @@ public class Gui extends Application {
                 personDAO.saveEntity(personToAdd);
                 Account accountToAdd = new Account(password, personToAdd, amount);
                 accountDAO.saveEntity(accountToAdd);
+                clearAllFields(scene);
                 errorText.setText("Account successfully created\n" +
                         "ID: " + accountToAdd.getId_account() + "\n" +
-                        "Password " + accountToAdd.getPassword());
+                        "Password " + password);
 //                stage.setScene(sceneLogin);
             }else{
                 errorText.setFill(Color.FIREBRICK);
