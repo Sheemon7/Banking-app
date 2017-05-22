@@ -8,7 +8,13 @@ import java.util.List;
 
 public class TransactionDAO extends DataAccessObject<Transaction>{
 
-    public TransactionDAO() {
+    private static final TransactionDAO instance = new TransactionDAO();
+
+    public static TransactionDAO getInstance() {
+        return instance;
+    }
+
+    private TransactionDAO() {
         super(Transaction.class);
     }
 

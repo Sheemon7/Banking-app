@@ -8,6 +8,7 @@ import banking.app.jpadatabase.AccountDAO;
 import banking.app.jpadatabase.CardDAO;
 import banking.app.jpadatabase.PersonDAO;
 import banking.app.jpadatabase.TransactionDAO;
+
 import banking.app.util.EntityNotFoundException;
 import banking.app.util.IncorrectAccountPasswordException;
 import com.sun.media.jfxmedia.logging.Logger;
@@ -41,10 +42,10 @@ public class Gui extends Application {
     private Scene sceneLogin, sceneOverview, sceneAccountDecision, sceneNewUserAccount, sceneExistingUserAccount;
     private Scene scenePayment;
     private TableView table = new TableView();
-    private TransactionDAO transactionDAO = new TransactionDAO();
-    private PersonDAO personDAO = new PersonDAO();
-    private AccountDAO accountDAO = new AccountDAO();
-    private CardDAO cardDAO = new CardDAO();
+
+    private TransactionDAO transactionDAO = TransactionDAO.getInstance();
+    private PersonDAO personDAO = PersonDAO.getInstance();
+    private AccountDAO accountDAO = AccountDAO.getInstance();
     private Account loggedAccount = null;
 
 

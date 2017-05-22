@@ -3,12 +3,17 @@ package banking.app.jpadatabase;
 import banking.app.entities.ATM;
 
 import javax.persistence.Query;
-import java.util.LinkedList;
 import java.util.List;
 
 public class ATMDAO extends DataAccessObject<ATM>{
 
-    public ATMDAO() {
+    private static final ATMDAO instance = new ATMDAO();
+
+    public static ATMDAO getInstance() {
+        return instance;
+    }
+
+    private ATMDAO() {
         super(ATM.class);
     }
 

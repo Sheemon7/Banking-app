@@ -7,7 +7,13 @@ import java.util.List;
 
 public class CardTypeDAO extends DataAccessObject<CardType> {
 
-    public CardTypeDAO() {
+    private static final CardTypeDAO instance = new CardTypeDAO();
+
+    public static CardTypeDAO getInstance() {
+        return instance;
+    }
+
+    private CardTypeDAO() {
         super(CardType.class);
     }
 

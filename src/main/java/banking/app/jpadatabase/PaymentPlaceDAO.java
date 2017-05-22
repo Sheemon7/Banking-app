@@ -7,7 +7,13 @@ import java.util.List;
 
 public class PaymentPlaceDAO extends DataAccessObject<PaymentPlace>{
 
-    public PaymentPlaceDAO() {
+    private static final PaymentPlaceDAO instance = new PaymentPlaceDAO();
+
+    public static PaymentPlaceDAO getInstance() {
+        return instance;
+    }
+
+    private PaymentPlaceDAO() {
         super(PaymentPlace.class);
     }
 

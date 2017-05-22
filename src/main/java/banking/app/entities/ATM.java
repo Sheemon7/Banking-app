@@ -46,7 +46,7 @@ public class ATM {
 
     public ATM(Long idPaymentPlace, BigDecimal balance, BigDecimal maxWithdrawal) {
         try {
-            this.paymentPlace = new PaymentPlaceDAO().getEntity(idPaymentPlace);
+            this.paymentPlace = PaymentPlaceDAO.getInstance().getEntity(idPaymentPlace);
         } catch (banking.app.util.EntityNotFoundException e) {
             e.printStackTrace();
         }

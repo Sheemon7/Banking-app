@@ -1,11 +1,9 @@
 package banking.app.jpadatabase;
 
-import banking.app.jpadatabase.DataAccessObject;
 import banking.app.entities.Account;
 import banking.app.util.EntityNotFoundException;
 import banking.app.util.IncorrectAccountPasswordException;
 
-import javax.persistence.NamedQuery;
 import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,7 +12,13 @@ import java.util.logging.Logger;
 public class AccountDAO extends DataAccessObject<Account>{
     private static final Logger LOG = Logger.getLogger(AccountDAO.class.getName());
 
-    public AccountDAO() {
+    private static final AccountDAO instance = new AccountDAO();
+
+    public static AccountDAO getInstance() {
+        return instance;
+    }
+
+    private AccountDAO() {
         super(Account.class);
     }
 
