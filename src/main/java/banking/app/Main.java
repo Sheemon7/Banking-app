@@ -36,8 +36,16 @@ public class Main {
         int k = 1;
         traderDAO.printKRichestTraders(k);
         System.out.println(transactionDAO.getSuspiciousTransactions());
-        System.out.println(cardTypeDAO.getMostCashflownCardType());
-        System.out.println(cardTypeDAO.getMostUsedCardType());
+        try {
+            System.out.println(cardTypeDAO.getMostCashflownCardType());
+        } catch (Exception e) {
+            System.out.println("There is no card type in database!");
+        }
+        try {
+            System.out.println(cardTypeDAO.getMostUsedCardType());
+        } catch (Exception e) {
+            System.out.println("There is no card type in database!");
+        }
 
         // test candidate - FOR EVERY ACCOUNT THAT HAS PAID OR WITHDRAWN WITH ANY CARD IN THE GIVEN INTERVAL AT LEAST THREE TIMES,
         // ADD 100 TO THEIR ACCOUNT

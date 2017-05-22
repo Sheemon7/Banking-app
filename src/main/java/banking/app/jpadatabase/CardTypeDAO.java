@@ -17,7 +17,7 @@ public class CardTypeDAO extends DataAccessObject<CardType> {
         return ENTITY_MANAGER.createQuery(query, CardType.class).getResultList();
     }
 
-    public String getMostCashflownCardType() {
+    public String getMostCashflownCardType() throws Exception {
         Query q = ENTITY_MANAGER.createNativeQuery(
                 "SELECT ct.typename, SUM(amount) FROM " +
                         "transaction t JOIN card c ON t.id_card = c.id_card " +
@@ -30,7 +30,7 @@ public class CardTypeDAO extends DataAccessObject<CardType> {
         return (String) result[0];
     }
 
-    public String getMostUsedCardType() {
+    public String getMostUsedCardType() throws Exception {
         Query q = ENTITY_MANAGER.createNativeQuery(
                 "SELECT ct.typename, COUNT(*) FROM " +
                         "transaction t JOIN card c ON t.id_card = c.id_card " +

@@ -4,15 +4,20 @@ AS
 $BODY$
 BEGIN
 
+  -- SELECT a
+  -- FROM account a
   UPDATE account a
-  SET balance = balance + balance * multiplier
-  WHERE a.id_account IN (SELECT t.id_account
-                       FROM transaction t
-                         JOIN account a ON
-                                          t.id_account = a.id_account
-                       WHERE t.date >= start_date AND t.date <= end_date
-                       GROUP BY t.id_account
-                       HAVING COUNT(t.id_transaction) >= 3);
+  SET balance = (balance + balance * multiplier)
+  WHERE EXISTS (
+      SELECT NULL
+      FROM (              SELECT c.id_card
+                         FROM transaction t
+                           JOIN card c ON
+                                         t.id_card = c.id_account
+                         WHERE t.date >= start_date AND t.date <= end_date
+                         GROUP BY c.id_card
+                         HAVING COUNT(c) >= 3) as eligible_cards
+  WHERE a.id_account = eligible_cards.id_card);
 
 END;
 $BODY$
