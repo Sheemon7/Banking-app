@@ -26,7 +26,7 @@ public class CardTypeDAO extends DataAccessObject<CardType> {
     public String getMostCashflownCardType() throws Exception {
         Query q = ENTITY_MANAGER.createNativeQuery(
                 "SELECT ct.typename, SUM(amount) FROM " +
-                        "transaction t JOIN card c ON t.id_card = c.id_card " +
+                        "transaction t JOIN card c ON t.id_card = c.id_card AND t.id_account is not NULL " +
                         "JOIN card_type ct ON c.id_card_type = ct.id_card_type GROUP BY ct.typename ORDER BY SUM(t.amount) DESC"
         );
         // jpa doesn't recognize limit
