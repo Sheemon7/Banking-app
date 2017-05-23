@@ -41,6 +41,10 @@ abstract class DataAccessObject<E> extends DatabaseAccess{
         return entity;
     }
 
+    public void refreshEntity(E entity) {
+        ENTITY_MANAGER.refresh(entity);
+    }
+
     public void deleteEntity(Long id) {
         TRANSACTION.begin();
         E reference = ENTITY_MANAGER.getReference(classType, id);

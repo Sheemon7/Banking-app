@@ -78,7 +78,9 @@ public class AccountDAO extends DataAccessObject<Account> {
         fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
         toAccount.setBalance(toAccount.getBalance().add(amount));
         ENTITY_MANAGER.persist(fromAccount);
+        ENTITY_MANAGER.refresh(fromAccount);
         ENTITY_MANAGER.persist(toAccount);
+        ENTITY_MANAGER.refresh(toAccount);
 
         TRANSACTION.commit();
     }

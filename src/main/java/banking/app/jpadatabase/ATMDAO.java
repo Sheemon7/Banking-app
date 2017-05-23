@@ -50,7 +50,6 @@ public class ATMDAO extends DataAccessObject<ATM>{
 
         TRANSACTION.begin();
 
-
         if (amount.compareTo(fromCard.getWithdrawalLimit()) > 0) {
             TRANSACTION.rollback();
             throw new CardMaxWithdrawalException();
@@ -64,8 +63,10 @@ public class ATMDAO extends DataAccessObject<ATM>{
         ENTITY_MANAGER.persist(t);
         fromAccount.setBalance(fromAccount.getBalance().add(amount));
         ENTITY_MANAGER.persist(fromAccount);
+        ENTITY_MANAGER.refresh(fromAccount);
         atm.setBalance(atm.getBalance().subtract(amount));
         ENTITY_MANAGER.persist(atm);
+        ENTITY_MANAGER.refresh(atm);
 
         TRANSACTION.commit();
     }
