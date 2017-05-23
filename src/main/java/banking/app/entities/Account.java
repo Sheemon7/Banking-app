@@ -40,7 +40,7 @@ public class Account {
     @Column(nullable = false)
     private String password;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_owner")
     private Person owner;
 
@@ -49,6 +49,9 @@ public class Account {
 
     @Column(nullable = false)
     private BigDecimal balance;
+
+    @OneToMany(mappedBy = "receiver")
+    private List<Transaction> receivedTransactions;
 
     public Account() {
     }
@@ -135,6 +138,14 @@ public class Account {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
+    }
+
+    public List<Transaction> getReceivedTransactions() {
+        return receivedTransactions;
+    }
+
+    public void setReceivedTransactions(List<Transaction> receivedTransactions) {
+        this.receivedTransactions = receivedTransactions;
     }
 
     @Override

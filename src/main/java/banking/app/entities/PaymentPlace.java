@@ -16,13 +16,13 @@ public class PaymentPlace {
     @Column(nullable=false)
     private String address;
     
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany()
     private List<CardType> accepts;
     
-    @OneToOne(mappedBy="paymentPlace", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy="paymentPlace")
     private ATM atm;
     
-    @OneToOne(mappedBy="paymentPlace", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy="paymentPlace")
     private Trader trader;
 
     public PaymentPlace() {

@@ -1,6 +1,7 @@
 package banking.app.entities;
 
 import java.math.BigDecimal;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -12,13 +13,16 @@ public class Card {
     @SequenceGenerator(name="card_gen", sequenceName="id_card_seq", allocationSize = 1)
     private Long id_card;
 
-    @ManyToOne (cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne (cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_card_type")
     private CardType card_type;
 
-    @ManyToOne (cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne (cascade = CascadeType.PERSIST)
     @JoinColumn(name="id_account")
     private Account account;
+
+    @OneToMany(mappedBy = "sender")
+    private List<Transaction> sentTransactions;
     
     @Column(nullable = false)
     private BigDecimal withdrawalLimit;
@@ -62,6 +66,14 @@ public class Card {
 
     public void setWithdrawalLimit(BigDecimal withdrawalLimit) {
         this.withdrawalLimit = withdrawalLimit;
+    }
+
+    public List<Transaction> getSentTransactions() {
+        return sentTransactions;
+    }
+
+    public void setSentTransactions(List<Transaction> transactions) {
+        this.sentTransactions = transactions;
     }
 
     @Override

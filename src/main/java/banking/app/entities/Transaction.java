@@ -15,11 +15,11 @@ public class Transaction {
     @SequenceGenerator(name = "transaction_gen", sequenceName = "id_transaction_seq", allocationSize = 1)
     private Long id_transaction;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne()
     @JoinColumn(name = "id_card")
     private Card sender;
     
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne()
     @JoinColumn(name = "id_account")
     private Account receiver;
     

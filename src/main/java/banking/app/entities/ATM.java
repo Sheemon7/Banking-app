@@ -18,7 +18,7 @@ public class ATM {
     private static final BigDecimal DEFAULT_MAX_WITHDRAWAL = new BigDecimal("5000");
 
     @Id
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="id_payment_place")
     private PaymentPlace paymentPlace;
 

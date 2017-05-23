@@ -20,8 +20,8 @@ public class Main {
         DatabaseAccess da = new DatabaseAccess();
         da.updateAllProcedures();
 //        da.dropAll();
-        da.truncateAll();
-        DataGenerator.generateData(3);
+//        da.truncateAll();
+//        DataGenerator.generateData(30);
 
         /* agregacni sestavy demo */
         /* named queries */
