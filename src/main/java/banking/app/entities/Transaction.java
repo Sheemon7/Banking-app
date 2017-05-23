@@ -9,8 +9,8 @@ import javax.persistence.*;
 public class Transaction {
 
     @Id
-    @GeneratedValue(generator="my_seq3")
-    @SequenceGenerator(name="my_seq3",sequenceName="transaction_id_transaction_seq", allocationSize=1)
+    @GeneratedValue(generator = "transaction_gen")
+    @SequenceGenerator(name = "transaction_gen", sequenceName = "id_transaction_seq", allocationSize = 1)
     private Long id_transaction;
 
     @ManyToOne(fetch = FetchType.EAGER)

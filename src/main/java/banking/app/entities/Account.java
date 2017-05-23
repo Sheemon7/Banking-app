@@ -27,8 +27,8 @@ public class Account {
     private static final BigDecimal DEFAULT_BALANCE = BigDecimal.ZERO;
 
     @Id
-    @GeneratedValue(generator = "my_seq1")
-    @SequenceGenerator(name = "my_seq1", sequenceName = "account_id_account_seq", allocationSize = 1)
+    @GeneratedValue(generator = "account_gen")
+    @SequenceGenerator(name = "account_gen", sequenceName = "id_account_seq", allocationSize = 1)
     private Long id_account;
 
     @Column

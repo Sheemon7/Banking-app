@@ -6,9 +6,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "card")
 public class Card {
-    
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator="card_gen")
+    @SequenceGenerator(name="card_gen", sequenceName="id_card_seq", allocationSize = 1)
     private Long id_card;
 
     @ManyToOne (cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)

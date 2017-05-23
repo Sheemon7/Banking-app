@@ -11,10 +11,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DataGenerator extends DatabaseAccess {
@@ -60,13 +57,20 @@ public class DataGenerator extends DatabaseAccess {
     }
 
     public static void generateData(int count) {
+        System.out.println("Generating new people");
         generatePersons(count);
+        System.out.println("Generating new card types");
         generateCardTypes();
+        System.out.println("Generating new accounts");
         generateAccounts(2 * count);
+        System.out.println("Generating new cards");
         generateCards(5 * count);
-//        generateTraders(count);
-//        generateATMS(count);
-//        generateTransactions(count * 100);
+        System.out.println("Generating new traders");
+        generateTraders(count);
+        System.out.println("Generating new atms");
+        generateATMS(count);
+        System.out.println("Generating new transactions");
+        generateTransactions(count * 100);
     }
 
     private static void generatePersons(int count) {
@@ -122,8 +126,9 @@ public class DataGenerator extends DatabaseAccess {
 
     private static void generateATMS(int count) {
         for (int i = 0; i < count; i++) {
+            PaymentPlace pp = generatePaymentPlace();
             BigDecimal balance = new BigDecimal(Math.random()).multiply(MAX_INIT_BALANCE).round(new MathContext(0, RoundingMode.HALF_UP));
-            ATM atm = new ATM(ADDRESSES.get(RANDOM.nextInt(ADDRESSES.size())), balance,
+            ATM atm = new ATM(pp, balance,
                     MAX_WITHDRAWALS_ATMS.get(RANDOM.nextInt(MAX_WITHDRAWALS_ATMS.size())));
             ATM_DAO.saveEntity(atm);
         }
@@ -133,10 +138,11 @@ public class DataGenerator extends DatabaseAccess {
     private static PaymentPlace generatePaymentPlace() {
         List<CardType> cardTypes = CARD_TYPE_DAO.getEntitiesList();
         PaymentPlace pp = new PaymentPlace(ADDRESSES.get(RANDOM.nextInt(ADDRESSES.size())));
-        System.out.println(cardTypes);
+        List<CardType> accepts = new ArrayList<>();
+        pp.setAccepts(accepts);
         Collections.shuffle(cardTypes);
-        System.out.println(cardTypes);
-        for (int i = 0; i < RANDOM.nextInt(cardTypes.size()); i++) {
+        // at least one accepted card type
+        for (int i = 0; i < RANDOM.nextInt(cardTypes.size() - 1) + 1; i++) {
             pp.getAccepts().add(cardTypes.get(i));
         }
         PAYMENT_PLACE_DAO.saveEntity(pp);

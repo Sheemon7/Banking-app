@@ -38,7 +38,7 @@ public class ATM {
         this(new PaymentPlace(address), balance, maxWithdrawal);
     }
 
-    private ATM(PaymentPlace paymentPlace, BigDecimal balance, BigDecimal maxWithdrawal) {
+    public ATM(PaymentPlace paymentPlace, BigDecimal balance, BigDecimal maxWithdrawal) {
         this.paymentPlace = paymentPlace;
         this.balance = balance;
         this.maxWithdrawal = maxWithdrawal;

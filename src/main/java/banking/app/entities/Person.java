@@ -13,8 +13,8 @@ import javax.persistence.*;
 public class Person {
 
     @Id
-    @GeneratedValue(generator="my_seq")
-    @SequenceGenerator(name="my_seq",sequenceName="person_id_person_seq", allocationSize=1)
+    @GeneratedValue(generator = "person_gen")
+    @SequenceGenerator(name = "person_gen", sequenceName = "id_person_seq", allocationSize = 1)
     private Long id_person;
 
     @Column(nullable=false)

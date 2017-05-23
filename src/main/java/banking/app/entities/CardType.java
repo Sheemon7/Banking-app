@@ -6,10 +6,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "card_type")
 public class CardType {
-    
+
     @Id
-    @GeneratedValue(generator="my_seq4")
-    @SequenceGenerator(name="my_seq4",sequenceName="cardtype_id_card_type_seq", allocationSize=1)
+    @GeneratedValue(generator = "card_type_gen")
+    @SequenceGenerator(name = "card_type_gen", sequenceName = "id_card_type_seq", allocationSize = 1)
     private Long id_card_type;
     
     @Column(nullable = false, unique = true, length = 100)

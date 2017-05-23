@@ -34,12 +34,13 @@ BEGIN
   DROP TABLE public.person;
   DROP TABLE public.payment_place;
   DROP TABLE public.card_type;
-  DROP TABLE public.sequence;
-  ALTER SEQUENCE public.account_id_account_seq RESTART WITH 1;
-  ALTER SEQUENCE public.cardtype_id_card_type_seq RESTART WITH 1;
-  ALTER SEQUENCE public.paymentplace_id_payment_place_seq RESTART WITH 1;
-  ALTER SEQUENCE public.person_id_person_seq RESTART WITH 1;
-  ALTER SEQUENCE public.transaction_id_transaction_seq RESTART WITH 1;
+--   DROP TABLE public.sequence;
+  DROP SEQUENCE public.id_account_seq;
+  DROP SEQUENCE public.id_card_seq;
+  DROP SEQUENCE public.id_card_type_seq;
+  DROP SEQUENCE public.id_payment_place_seq;
+  DROP SEQUENCE public.id_person_seq;
+  DROP SEQUENCE public.id_transaction_seq;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE;

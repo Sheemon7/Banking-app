@@ -1,14 +1,16 @@
 package banking.app.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "payment_place")
-public class PaymentPlace {   
+public class PaymentPlace {
+
     @Id
-    @GeneratedValue(generator="my_seq2")
-    @SequenceGenerator(name="my_seq2",sequenceName="paymentplace_id_payment_place_seq", allocationSize=1)
+    @GeneratedValue(generator = "payment_place_gen")
+    @SequenceGenerator(name = "payment_place_gen", sequenceName = "id_payment_place_seq", allocationSize = 1)
     private long id_payment_place;
 
     @Column(nullable=false)
