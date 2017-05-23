@@ -676,7 +676,8 @@ public class Gui extends Application {
                 } catch (EntityNotFoundException e1) {
                     e1.printStackTrace();
                 }
-
+                clearAllFields(scene);
+                combo1.setValue(null);
                 updateScenes(stage);
 
                 stage.setScene(sceneAccountOverview);
