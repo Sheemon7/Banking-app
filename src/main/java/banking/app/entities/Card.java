@@ -108,10 +108,8 @@ public class Card {
 
     @Override
     public String toString() {
-        return "Card{" +
-                "id=" + id_card +
-                ", card_type=" + card_type +
-                ", withdrawalLimit=" + withdrawalLimit +
-                '}';
+        return "id=" + id_card + ", card_type=" + card_type.getTypeName();
     }
+
+
 }
