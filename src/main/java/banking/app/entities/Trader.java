@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Trader {
     
     @Id
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="id_payment_place")
     private PaymentPlace paymentPlace;
 

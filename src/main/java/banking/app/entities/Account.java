@@ -41,17 +41,17 @@ public class Account {
     @Column(nullable = false)
     private String password;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_owner")
     private Person owner;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<Card> cards;
 
     @Column(nullable = false)
     private BigDecimal balance;
 
-    @OneToMany(mappedBy = "receiver")
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.PERSIST)
     private List<Transaction> receivedTransactions;
 
     public Account() {

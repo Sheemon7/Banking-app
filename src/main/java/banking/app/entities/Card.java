@@ -24,7 +24,7 @@ public class Card {
     @JoinColumn(name="id_account")
     private Account account;
 
-    @OneToMany(mappedBy = "sender")
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
     private List<Transaction> sentTransactions;
     
     @Column(nullable = false)
@@ -98,11 +98,12 @@ public class Card {
 
     @Override
     public int hashCode() {
-        int result = id_card != null ? id_card.hashCode() : 0;
-        result = 31 * result + (card_type != null ? card_type.hashCode() : 0);
-        result = 31 * result + (account != null ? account.hashCode() : 0);
-        result = 31 * result + (withdrawalLimit != null ? withdrawalLimit.hashCode() : 0);
-        return result;
+//        int result = id_card != null ? id_card.hashCode() : 0;
+//        result = 31 * result + (card_type != null ? card_type.hashCode() : 0);
+//        result = 31 * result + (account != null ? account.hashCode() : 0);
+//        result = 31 * result + (withdrawalLimit != null ? withdrawalLimit.hashCode() : 0);
+//        return result;
+        return Math.toIntExact(id_card);
     }
 
     @Override

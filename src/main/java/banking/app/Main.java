@@ -21,7 +21,7 @@ public class Main {
         da.updateAllProcedures();
 //        da.dropAll();
 //        da.truncateAll();
-//        DataGenerator.generateData(30);
+//        DataGenerator.generateData(5);
 
         /* agregacni sestavy demo */
         /* named queries */
@@ -47,12 +47,12 @@ public class Main {
         try {
             System.out.println(cardTypeDAO.getMostCashflownCardType());
         } catch (Exception e) {
-            System.out.println("There is no card type in database!");
+            System.out.println("There is no card type or transaction in database!");
         }
         try {
             System.out.println(cardTypeDAO.getMostUsedCardType());
         } catch (Exception e) {
-            System.out.println("There is no card type in database!");
+            System.out.println("There is no card type or transaction in database!");
         }
 
         // test candidate - FOR EVERY ACCOUNT THAT HAS PAID OR WITHDRAWN WITH ANY CARD IN THE GIVEN INTERVAL AT LEAST THREE TIMES,

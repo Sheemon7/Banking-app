@@ -26,11 +26,6 @@ import javafx.util.Callback;
 
 import java.math.BigDecimal;
 
-/**
- * Created by Tomas on 5/20/2017.
- */
-
-
 public class Gui extends Application {
 
     private Scene sceneLogin, sceneAccountOverview, sceneAccountDecision, sceneNewUserAccount, sceneExistingUserAccount;
@@ -48,7 +43,7 @@ public class Gui extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            loggedAccount = accountDAO.getEntity((long) 18);
+            loggedAccount = accountDAO.getEntity((long) 3);
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
         }

@@ -29,10 +29,10 @@ public class Person {
     @Column(nullable=false)
     private String address;
 
-    @OneToMany(mappedBy="owner", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="owner", fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Account> accounts;
 
-    @OneToMany(mappedBy="person", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="person", fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Trader> traders;
 
     public Person() {}
