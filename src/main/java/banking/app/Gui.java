@@ -3,8 +3,10 @@ package banking.app;
 import banking.app.entities.*;
 import banking.app.gui.NumberTextField;
 import banking.app.jpadatabase.*;
+import banking.app.util.CardMaxWithdrawalException;
 import banking.app.util.EntityNotFoundException;
 import banking.app.util.IncorrectAccountPasswordException;
+import banking.app.util.NonExistingAccountNumber;
 import com.sun.media.jfxmedia.logging.Logger;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -604,8 +606,8 @@ public class Gui extends Application {
 
         Label numLab3 = new Label("Card:");
         grid.add(numLab3,0,3);
-        ObservableList<Long> combo1Menu = FXCollections.observableArrayList(loggedAccount.getCardsIds());
-        final ComboBox<Long> combo1 = new ComboBox(combo1Menu);
+        ObservableList<Card> combo1Menu = FXCollections.observableArrayList(loggedAccount.getCards());
+        final ComboBox<Card> combo1 = new ComboBox(combo1Menu);
         grid.add(combo1,1,3);
 //        NumberTextField numField3 = new NumberTextField();
 //        grid.add(numField3,1,3);
@@ -646,15 +648,28 @@ public class Gui extends Application {
             if(numField2.getText().length() != 0) {
                 amount = new BigDecimal(numField2.getText());
             }
-            Long cardUsed = null;
-            if(combo1.getValue() != null) {
-                cardUsed = combo1.getValue();
-            }
+            Card cardUsed = combo1.getValue();
+
             String messageToReceiver = textField1.getText();
             String messageToSender = textField2.getText();
 
             if(targetAccount != null && amount != null && cardUsed != null){
                 //check balance on account
+                try {
+                    accountDAO.pay(cardUsed,targetAccount,messageToSender,messageToReceiver,amount);
+                } catch (NonExistingAccountNumber nonExistingAccountNumber) {
+                    nonExistingAccountNumber.printStackTrace();
+                } catch (CardMaxWithdrawalException e1) {
+                    e1.printStackTrace();
+                }
+                try {
+                    loggedAccount = accountDAO.getEntity(loggedAccount.getId_account());
+                } catch (EntityNotFoundException e1) {
+                    e1.printStackTrace();
+                }
+
+                updateScenes(stage);
+
                 stage.setScene(sceneAccountOverview);
             }
 
