@@ -1,5 +1,7 @@
 package banking.app.entities;
 
+import javafx.beans.property.SimpleStringProperty;
+
 import java.math.BigDecimal;
 import java.sql.Date;
 import javax.persistence.*;
@@ -47,6 +49,22 @@ public class Transaction {
         this.messageToSender = messageToSender;
         this.messageToReceiver = messageToReceiver;
         this.date = date;
+    }
+
+    public SimpleStringProperty getSSSenderCardId(){
+        return new SimpleStringProperty(sender.getId_card().toString());
+    }
+
+    public SimpleStringProperty getSSAmount(){
+        return new SimpleStringProperty(amount.toString());
+    }
+
+    public SimpleStringProperty getSSAcountId(){
+        return new SimpleStringProperty(receiver.getId_account().toString());
+    }
+
+    public SimpleStringProperty getSSmessageToSender(){
+        return new SimpleStringProperty(messageToSender);
     }
 
     public Long getId_transaction() {
@@ -104,6 +122,8 @@ public class Transaction {
     public void setDate(Date dueDate) {
         this.date = dueDate;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
