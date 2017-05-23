@@ -15,10 +15,10 @@ public class CardType {
     @Column(nullable = false, unique = true, length = 100)
     private String typeName;
     
-    @OneToMany(mappedBy = "card_type")
+    @OneToMany(mappedBy = "card_type", cascade = CascadeType.ALL)
     private List<Card> cards;
     
-    @ManyToMany(mappedBy = "accepts")
+    @ManyToMany(mappedBy = "accepts", cascade = CascadeType.PERSIST)
     private List<PaymentPlace> acceptedAt;
 
     public CardType() {
@@ -76,11 +76,12 @@ public class CardType {
 
     @Override
     public int hashCode() {
-        int result = id_card_type != null ? id_card_type.hashCode() : 0;
-        result = 31 * result + (typeName != null ? typeName.hashCode() : 0);
-        result = 31 * result + (cards != null ? cards.hashCode() : 0);
-        result = 31 * result + (acceptedAt != null ? acceptedAt.hashCode() : 0);
-        return result;
+//        int result = id_card_type != null ? id_card_type.hashCode() : 0;
+//        result = 31 * result + (typeName != null ? typeName.hashCode() : 0);
+//        result = 31 * result + (cards != null ? cards.hashCode() : 0);
+//        result = 31 * result + (acceptedAt != null ? acceptedAt.hashCode() : 0);
+//        return result;
+        return Math.toIntExact(id_card_type);
     }
 
     @Override

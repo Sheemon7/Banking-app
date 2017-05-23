@@ -19,10 +19,10 @@ public class PaymentPlace {
     @ManyToMany()
     private List<CardType> accepts;
     
-    @OneToOne(mappedBy="paymentPlace")
+    @OneToOne(mappedBy="paymentPlace", cascade = CascadeType.ALL)
     private ATM atm;
     
-    @OneToOne(mappedBy="paymentPlace")
+    @OneToOne(mappedBy="paymentPlace", cascade = CascadeType.PERSIST)
     private Trader trader;
 
     public PaymentPlace() {
@@ -89,12 +89,13 @@ public class PaymentPlace {
 
     @Override
     public int hashCode() {
-        int result = (int) (id_payment_place ^ (id_payment_place >>> 32));
-        result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + (accepts != null ? accepts.hashCode() : 0);
-        result = 31 * result + (atm != null ? atm.hashCode() : 0);
-        result = 31 * result + (trader != null ? trader.hashCode() : 0);
-        return result;
+//        int result = (int) (id_payment_place ^ (id_payment_place >>> 32));
+//        result = 31 * result + (address != null ? address.hashCode() : 0);
+//        result = 31 * result + (accepts != null ? accepts.hashCode() : 0);
+//        result = 31 * result + (atm != null ? atm.hashCode() : 0);
+//        result = 31 * result + (trader != null ? trader.hashCode() : 0);
+//        return result;
+        return Math.toIntExact(id_payment_place);
     }
 
     @Override

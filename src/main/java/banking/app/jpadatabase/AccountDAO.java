@@ -1,15 +1,21 @@
 package banking.app.jpadatabase;
 
 import banking.app.entities.Account;
+import banking.app.entities.Card;
+import banking.app.entities.Transaction;
+import banking.app.util.CardMaxWithdrawalException;
 import banking.app.util.EntityNotFoundException;
 import banking.app.util.IncorrectAccountPasswordException;
+import banking.app.util.NonExistingAccountNumber;
 
 import javax.persistence.Query;
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class AccountDAO extends DataAccessObject<Account>{
+public class AccountDAO extends DataAccessObject<Account> {
     private static final Logger LOG = Logger.getLogger(AccountDAO.class.getName());
 
     private static final AccountDAO instance = new AccountDAO();
@@ -48,5 +54,30 @@ public class AccountDAO extends DataAccessObject<Account>{
         Query q = ENTITY_MANAGER.createNamedQuery("Account.getNumberOfRich");
         q.setParameter("threshold", threshold);
         return (Long) q.getSingleResult();
+    }
+
+    public void pay(Card fromCard, long toAccountId, String messageToSender, String messageToReceiver, BigDecimal amount)
+            throws NonExistingAccountNumber, CardMaxWithdrawalException {
+        Account toAccount, fromAccount = fromCard.getAccount();
+        try {
+            toAccount = getEntity(toAccountId);
+        } catch (EntityNotFoundException e) {
+            throw new NonExistingAccountNumber();
+        }
+
+        TRANSACTION.begin();
+
+        Transaction t = new Transaction(fromCard, toAccount, amount,
+                messageToSender, messageToReceiver, Date.valueOf(LocalDate.now()));
+        TransactionDAO.getInstance().saveEntity(t);
+        fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
+        toAccount.setBalance(toAccount.getBalance().add(amount));
+
+        if (amount.compareTo(fromCard.getWithdrawalLimit()) > 0) {
+            TRANSACTION.rollback();
+            throw new CardMaxWithdrawalException();
+        }
+
+        TRANSACTION.commit();
     }
 }
