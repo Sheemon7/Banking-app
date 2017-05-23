@@ -67,16 +67,18 @@ public class AccountDAO extends DataAccessObject<Account> {
 
         TRANSACTION.begin();
 
-        Transaction t = new Transaction(fromCard, toAccount, amount,
-                messageToSender, messageToReceiver, Date.valueOf(LocalDate.now()));
-        TransactionDAO.getInstance().saveEntity(t);
-        fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
-        toAccount.setBalance(toAccount.getBalance().add(amount));
-
         if (amount.compareTo(fromCard.getWithdrawalLimit()) > 0) {
             TRANSACTION.rollback();
             throw new CardMaxWithdrawalException();
         }
+
+        Transaction t = new Transaction(fromCard, toAccount, amount,
+                messageToSender, messageToReceiver, Date.valueOf(LocalDate.now()));
+        ENTITY_MANAGER.persist(t);
+        fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
+        toAccount.setBalance(toAccount.getBalance().add(amount));
+        ENTITY_MANAGER.persist(fromAccount);
+        ENTITY_MANAGER.persist(toAccount);
 
         TRANSACTION.commit();
     }
