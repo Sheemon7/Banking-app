@@ -163,8 +163,8 @@ public class Transaction {
     public String toString() {
         return "Transaction{" +
                 "id_transaction=" + id_transaction +
-                ", sender=" + sender +
-                ", receiver=" + receiver +
+                ", sender=" + sender.getId_card() +
+                ", receiver=" + receiver.getId_account() +
                 ", amount=" + amount +
                 ", messageToSender='" + messageToSender + '\'' +
                 ", messageToReceiver='" + messageToReceiver + '\'' +

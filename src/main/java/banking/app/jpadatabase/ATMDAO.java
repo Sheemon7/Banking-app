@@ -52,7 +52,7 @@ public class ATMDAO extends DataAccessObject<ATM>{
 
         Account fromAccount = fromCard.getAccount();
         String message = "Card id " + fromCard.getId_card() + " withdrawn " + amount + " from ATM id " +
-                atm.getPaymentPlace().getId_payment_place();
+                atm.getPaymentPlace().getId_payment_place() + " at " + atm.getPaymentPlace().getAddress();
         Transaction t = new Transaction(fromCard, null, amount,
                 message, message, Date.valueOf(LocalDate.now()));
         TransactionDAO.getInstance().saveEntity(t);

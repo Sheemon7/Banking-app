@@ -81,6 +81,8 @@ public class Trader {
     public String toString() {
         return "Trader{" +
                 "paymentPlace=" + paymentPlace +
+                ", account=" + account.getId_account() +
+                ", person=" + person +
                 '}';
     }
 }
