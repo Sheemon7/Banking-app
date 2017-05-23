@@ -68,6 +68,14 @@ public class Gui extends Application {
         primaryStage.show();
     }
 
+    public void updateScenes(Stage stage){
+        sceneAccountOverview = createAccountOverviewScene(stage);
+        sceneCardOverview = createCardOverviewScene(stage);
+        sceneATMWithdraw = createATMWithdrawScene(stage);
+        sceneCardCreation = createCardCreationScene(stage);
+        sceneCardDeletion = createCardDeleteScene(stage);
+    }
+
     public Scene createCardOverviewScene(Stage stage){
         GridPane grid = new GridPane();
         Scene scene = new Scene(grid, 800, 600);
@@ -394,6 +402,12 @@ public class Gui extends Application {
 
         btn1.setOnAction(e->{
             if(combo1.getValue() != null && numField1.getText().length() != 0) {
+                try {
+                    loggedAccount = accountDAO.getEntity(loggedAccount.getId_account());
+                } catch (EntityNotFoundException e1) {
+                    e1.printStackTrace();
+                }
+                updateScenes(stage);
                 Card cardToAdd = new Card(combo1.getValue(),loggedAccount, new BigDecimal(numField1.getText()));
                 cardDAO.saveEntity(cardToAdd);
                 stage.setScene(sceneAccountOverview);
@@ -440,6 +454,7 @@ public class Gui extends Application {
 
         btn1.setOnAction(e->{
             if(combo1.getValue()!= null) {
+                updateScenes(stage);
                 stage.setScene(sceneAccountOverview);
                 cardDAO.deleteEntity(combo1.getValue());
             }
