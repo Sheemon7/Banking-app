@@ -2,9 +2,9 @@ package banking.app.entities;
 
 import javafx.beans.property.SimpleStringProperty;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
-import javax.persistence.*;
 
 @Entity
 @Table(name = "transaction")

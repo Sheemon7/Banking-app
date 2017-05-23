@@ -1,7 +1,5 @@
 package banking.app;
 
-import banking.app.entities.Account;
-import banking.app.entities.Person;
 import banking.app.jpadatabase.*;
 import javafx.application.Application;
 
@@ -23,7 +21,7 @@ public class Main {
         da.updateAllProcedures();
 //        da.dropAll();
         da.truncateAll();
-        DataGenerator.generateData(10);
+        DataGenerator.generateData(3);
 
         /* agregacni sestavy demo */
         /* named queries */

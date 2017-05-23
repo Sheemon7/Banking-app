@@ -3,10 +3,8 @@ package banking.app;
 import banking.app.entities.*;
 import banking.app.gui.NumberTextField;
 import banking.app.jpadatabase.AccountDAO;
-import banking.app.jpadatabase.CardDAO;
 import banking.app.jpadatabase.PersonDAO;
 import banking.app.jpadatabase.TransactionDAO;
-
 import banking.app.util.EntityNotFoundException;
 import banking.app.util.IncorrectAccountPasswordException;
 import com.sun.media.jfxmedia.logging.Logger;
@@ -18,19 +16,16 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Date;
 
 /**

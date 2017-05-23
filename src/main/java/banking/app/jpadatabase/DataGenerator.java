@@ -190,7 +190,7 @@ public class DataGenerator extends DatabaseAccess {
 
             String messageReceiver = MESSAGES.get(RANDOM.nextInt(MESSAGES.size()));
             String messageSender = MESSAGES.get(RANDOM.nextInt(MESSAGES.size()));
-            Transaction tr = new Transaction(c, null, paid, messageSender, messageReceiver, date);
+            Transaction tr = new Transaction(c, c.getAccount(), paid, messageSender, messageReceiver, date);
             TRANSACTION_DAO.saveEntity(tr);
         }
 
