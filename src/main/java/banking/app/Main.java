@@ -21,7 +21,7 @@ public class Main {
         da.updateAllProcedures();
 //        da.dropAll();
 //        da.truncateAll();
-//        DataGenerator.generateData(5);
+//        DataGenerator.generateData(30);
 
         /* agregacni sestavy demo */
         /* named queries */

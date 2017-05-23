@@ -3,10 +3,7 @@ package banking.app;
 import banking.app.entities.*;
 import banking.app.gui.NumberTextField;
 import banking.app.jpadatabase.*;
-import banking.app.util.CardMaxWithdrawalException;
-import banking.app.util.EntityNotFoundException;
-import banking.app.util.IncorrectAccountPasswordException;
-import banking.app.util.NonExistingAccountNumber;
+import banking.app.util.*;
 import com.sun.media.jfxmedia.logging.Logger;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -671,7 +668,7 @@ public class Gui extends Application {
                     accountDAO.pay(cardUsed,targetAccount,messageToSender,messageToReceiver,amount);
                 } catch (NonExistingAccountNumber nonExistingAccountNumber) {
                     nonExistingAccountNumber.printStackTrace();
-                } catch (CardMaxWithdrawalException e1) {
+                } catch (NotEnoughMoneyException e1) {
                     e1.printStackTrace();
                 }
                 try {

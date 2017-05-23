@@ -45,7 +45,7 @@ public class CardTypeDAO extends DataAccessObject<CardType> {
         // jpa doesn't recognize limit
         q.setMaxResults(1);
         Object[] result = (Object[]) q.getSingleResult();
-        System.out.println("Users of " + result[0] + " spend " + result[1] + " times.");
+        System.out.println("Users of " + result[0] + " used their cards " + result[1] + " times.");
         return (String) result[0];
     }
 }

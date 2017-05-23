@@ -71,14 +71,10 @@ public class AccountDAO extends DataAccessObject<Account> {
 
         Transaction t = new Transaction(fromCard, toAccount, amount,
                 messageToSender, messageToReceiver, Date.valueOf(LocalDate.now()));
-        ENTITY_MANAGER.persist(t);
         fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
         toAccount.setBalance(toAccount.getBalance().add(amount));
-        ENTITY_MANAGER.persist(fromAccount);
-        ENTITY_MANAGER.refresh(fromAccount);
-        ENTITY_MANAGER.persist(toAccount);
-        ENTITY_MANAGER.refresh(toAccount);
-
+        toAccount.getReceivedTransactions().add(t);
+        fromCard.getSentTransactions().add(t);
         TRANSACTION.commit();
     }
 }
