@@ -64,5 +64,8 @@ public class Main {
         da.updateBonuses(begin, end, multiplier);
 
         Application.launch(Gui.class,args);
+
+        // close connections
+        DatabaseAccess.closeAllConnections();
     }
 }

@@ -65,4 +65,8 @@ public class DatabaseAccess {
         TRANSACTION.commit();
     }
 
+    public static void closeAllConnections() {
+        ENTITY_MANAGER.close();
+        ENTITY_MANAGER_FACTORY.close();
+    }
 }

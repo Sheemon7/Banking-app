@@ -193,6 +193,5 @@ public class DataGenerator extends DatabaseAccess {
             Transaction tr = new Transaction(c, c.getAccount(), paid, messageSender, messageReceiver, date);
             TRANSACTION_DAO.saveEntity(tr);
         }
-
     }
 }
