@@ -2,7 +2,7 @@ package banking.app.util;
 
 public class CardMaxWithdrawalException extends Exception {
 
-    private static final String MESSAGE = "Non existing account number! ";
+    private static final String MESSAGE = "Exceeded card max withdrawal!";
 
     public CardMaxWithdrawalException() {
     }
