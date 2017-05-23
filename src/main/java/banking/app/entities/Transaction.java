@@ -61,7 +61,7 @@ public class Transaction {
     }
 
     public SimpleLongProperty getSSAcountId(){
-        return new SimpleLongProperty(sender.getId_card());
+        return new SimpleLongProperty(sender.getAccount().getId_account());
     }
 
 
