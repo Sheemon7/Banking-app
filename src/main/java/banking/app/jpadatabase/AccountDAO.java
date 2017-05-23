@@ -3,10 +3,7 @@ package banking.app.jpadatabase;
 import banking.app.entities.Account;
 import banking.app.entities.Card;
 import banking.app.entities.Transaction;
-import banking.app.util.CardMaxWithdrawalException;
-import banking.app.util.EntityNotFoundException;
-import banking.app.util.IncorrectAccountPasswordException;
-import banking.app.util.NonExistingAccountNumber;
+import banking.app.util.*;
 
 import javax.persistence.Query;
 import java.math.BigDecimal;
@@ -57,7 +54,7 @@ public class AccountDAO extends DataAccessObject<Account> {
     }
 
     public void pay(Card fromCard, long toAccountId, String messageToSender, String messageToReceiver, BigDecimal amount)
-            throws NonExistingAccountNumber, CardMaxWithdrawalException {
+            throws NonExistingAccountNumber, NotEnoughMoneyException {
         Account toAccount, fromAccount = fromCard.getAccount();
         try {
             toAccount = getEntity(toAccountId);
@@ -67,9 +64,9 @@ public class AccountDAO extends DataAccessObject<Account> {
 
         TRANSACTION.begin();
 
-        if (amount.compareTo(fromCard.getWithdrawalLimit()) > 0) {
+        if (amount.compareTo(fromAccount.getBalance()) > 0) {
             TRANSACTION.rollback();
-            throw new CardMaxWithdrawalException();
+            throw new NotEnoughMoneyException();
         }
 
         Transaction t = new Transaction(fromCard, toAccount, amount,
