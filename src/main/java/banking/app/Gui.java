@@ -391,21 +391,23 @@ public class Gui extends Application {
         hbBtn1.getChildren().add(btn1);
         grid.add(hbBtn1, 1, 3);
 
+        Text textM = new Text();
+        grid.add(textM,1,4);
+
         btn.setOnAction(e->{
             stage.setScene(sceneAccountOverview);
         });
 
         btn1.setOnAction(e->{
             if(combo1.getValue() != null && numField1.getText().length() != 0) {
-                try {
-                    loggedAccount = accountDAO.getEntity(loggedAccount.getId_account());
-                } catch (EntityNotFoundException e1) {
-                    e1.printStackTrace();
-                }
-                updateScenes(stage);
                 Card cardToAdd = new Card(combo1.getValue(),loggedAccount, new BigDecimal(numField1.getText()));
                 cardDAO.saveEntity(cardToAdd);
-                stage.setScene(sceneAccountOverview);
+                loggedAccount.getCards().add(cardToAdd);
+                accountDAO.saveEntity(loggedAccount);
+                textM.setText("Card ID " + cardToAdd.getId_card());
+                numField1.setText("");
+                updateScenes(stage);
+//                stage.setScene(sceneAccountOverview);
             }
         });
 
@@ -427,8 +429,8 @@ public class Gui extends Application {
         Text text1 = new Text("Card Id to be deleted");
         grid.add(text1, 0, 1);
 
-        ObservableList<Long> combo1Menu = FXCollections.observableArrayList(loggedAccount.getCardsIds());
-        final ComboBox<Long> combo1 = new ComboBox(combo1Menu);
+        ObservableList<Card> combo1Menu = FXCollections.observableArrayList(loggedAccount.getCards());
+        final ComboBox<Card> combo1 = new ComboBox(combo1Menu);
         grid.add(combo1,1,1);
 
         Button btn = new Button("Go Back");
@@ -449,9 +451,11 @@ public class Gui extends Application {
 
         btn1.setOnAction(e->{
             if(combo1.getValue()!= null) {
+                cardDAO.deleteEntity(combo1.getValue().getId_card());
+                loggedAccount.getCards().remove(combo1.getValue());
                 updateScenes(stage);
                 stage.setScene(sceneAccountOverview);
-                cardDAO.deleteEntity(combo1.getValue());
+
             }
         });
 
