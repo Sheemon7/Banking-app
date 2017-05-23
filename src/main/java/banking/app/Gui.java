@@ -117,6 +117,7 @@ public class Gui extends Application {
 
         btn1.setOnAction(e->{
             selectedCard = null;
+            sceneCardOverview = createCardOverviewScene(stage); //all informations deleted after leaving
             stage.setScene(sceneAccountOverview);
         });
 
@@ -320,11 +321,29 @@ public class Gui extends Application {
         hbBtn.getChildren().add(btn);
         grid.add(hbBtn, 0, 3);
 
-//        Button btnAcc = new Button("Create new Card");
-//        HBox hbBtnAcc = new HBox(10);
-//        hbBtnAcc.setAlignment(Pos.BOTTOM_RIGHT);
-//        hbBtnAcc.getChildren().add(btnAcc);
-//        grid.add(hbBtnAcc, 1, 3);
+        btn500.setOnAction(e->{
+            if(combo1.getValue()!=null) {
+                stage.setScene(sceneAccountOverview);
+            }
+        });
+
+        btn1000.setOnAction(e->{
+            if(combo1.getValue()!=null) {
+                stage.setScene(sceneAccountOverview);
+            }
+        });
+
+        btn1500.setOnAction(e->{
+            if(combo1.getValue()!=null) {
+                stage.setScene(sceneAccountOverview);
+            }
+        });
+
+        btn2000.setOnAction(e->{
+            if(combo1.getValue()!=null) {
+                stage.setScene(sceneAccountOverview);
+            }
+        });
 
         btn.setOnAction(e->{
             stage.setScene(sceneAccountOverview);
@@ -622,6 +641,7 @@ public class Gui extends Application {
 
             if(targetAccount != null && amount != null && cardUsed != null){
                 //check balance on account
+                stage.setScene(sceneAccountOverview);
             }
 
 
