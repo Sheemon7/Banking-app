@@ -111,7 +111,6 @@ public class Card {
         return "Card{" +
                 "id=" + id_card +
                 ", card_type=" + card_type +
-                ", account=" + account +
                 ", withdrawalLimit=" + withdrawalLimit +
                 '}';
     }

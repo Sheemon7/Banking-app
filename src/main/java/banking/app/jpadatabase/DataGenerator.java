@@ -170,7 +170,7 @@ public class DataGenerator extends DatabaseAccess {
             Date date = new Date(d);
             // ATM transactions don't have messages as well
             String message = "Card id " + c.getId_card() + " withdrawn " + withdrew + " from ATM id " +
-                    atm.getPaymentPlace().getId_payment_place();
+                    atm.getPaymentPlace().getId_payment_place() + " at " + atm.getPaymentPlace().getAddress();
             Transaction tr = new Transaction(c, null, withdrew, message, message, date);
             TRANSACTION_DAO.saveEntity(tr);
         }

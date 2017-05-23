@@ -26,7 +26,7 @@ public class TraderDAO extends DataAccessObject<Trader>{
 
     public void printKRichestTraders(int k) {
         Query q = ENTITY_MANAGER.createNativeQuery(
-                "SELECT address, balance FROM account a JOIN trader t ON a.id_account = t.id_account\n" +
+                "SELECT address, balance FROM account a JOIN trader t ON a.id_account = t.id_account" +
                 "  JOIN payment_place p ON p.id_payment_place = t.id_payment_place ORDER BY balance DESC " +
                         "LIMIT ?1");
         q.setParameter(1, k);
@@ -39,9 +39,10 @@ public class TraderDAO extends DataAccessObject<Trader>{
 
     public void printKTradersWithBiggestRevenue(int k) {
         Query q = ENTITY_MANAGER.createNativeQuery(
-                "SELECT address, balance FROM account a JOIN trader t ON a.id_account = t.id_account\n" +
-                        "  JOIN payment_place p ON p.id_payment_place = t.id_payment_place ORDER BY balance DESC " +
-                        "LIMIT ?1");
+                "SELECT pp.address, SUM(tr.amount) FROM transaction tr JOIN trader t ON tr.id_account = t.id_account " +
+                        "JOIN payment_place pp ON pp.id_payment_place = t.id_payment_place " +
+                        "WHERE now() - interval '1 year' < tr.date AND tr.date <= now() GROUP BY pp.id_payment_place " +
+                        "ORDER BY SUM(tr.amount) DESC LIMIT ?1");
         q.setParameter(1, k);
         List<Object[]> resultList = q.getResultList();
         System.out.println("Showing " + k + " traders with biggest revenue in last year");
