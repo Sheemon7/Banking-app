@@ -39,6 +39,7 @@ public class Gui extends Application {
     private AccountDAO accountDAO = AccountDAO.getInstance();
     private CardDAO cardDAO = CardDAO.getInstance();
     private CardTypeDAO cardTypeDAO = CardTypeDAO.getInstance();
+    private ATMDAO atmDAO = ATMDAO.getInstance();
     private Account loggedAccount = null;
     private Card selectedCard = null;
 
@@ -240,8 +241,8 @@ public class Gui extends Application {
 
         Button btn = new Button("New payment");
         btn.setMinWidth(100.0);
-        Button btn1 = new Button("ATM withdraw");
-        btn1.setMinWidth(100.0);
+//        Button btn1 = new Button("ATM withdraw");
+//        btn1.setMinWidth(100.0);
         Button btn2 = new Button("Card overview");
         btn2.setMinWidth(100.0);
         Button btn3 = new Button("Create card");
@@ -251,16 +252,16 @@ public class Gui extends Application {
         Button btn5 = new Button("Log out");
         btn5.setMinWidth(100.0);
 
-        buttonContainer.getChildren().addAll(btn,btn1,btn2,btn3,btn4,btn5);
+        buttonContainer.getChildren().addAll(btn,btn2,btn3,btn4,btn5);
         grid.add(buttonContainer,2,3);
 
         btn.setOnAction(e->{
             stage.setScene(scenePayment);
         });
 
-        btn1.setOnAction(e->{
-            stage.setScene(sceneATMWithdraw);
-        });
+//        btn1.setOnAction(e->{
+//            stage.setScene(sceneATMWithdraw);
+//        });
 
         btn2.setOnAction(e->{
             stage.setScene(sceneCardOverview);
@@ -298,8 +299,12 @@ public class Gui extends Application {
         Text text1 = new Text("Select card: ");
         grid.add(text1,0,1);
 
-        ObservableList<Long> combo1Menu = FXCollections.observableArrayList(loggedAccount.getCardsIds());
-        final ComboBox<Long> combo1 = new ComboBox(combo1Menu);
+        ObservableList<ATM> combo2Menu = FXCollections.observableArrayList(atmDAO.getEntitiesList());
+        final ComboBox<ATM> combo2 = new ComboBox<>(combo2Menu);
+        grid.add(combo2, 2, 1);
+
+        ObservableList<Card> combo1Menu = FXCollections.observableArrayList(loggedAccount.getCards());
+        final ComboBox<Card> combo1 = new ComboBox(combo1Menu);
         grid.add(combo1,1,1);
 
         GridPane withdrawGrid = new GridPane();
@@ -328,6 +333,13 @@ public class Gui extends Application {
 
         btn500.setOnAction(e->{
             if(combo1.getValue()!=null) {
+                try {
+                    atmDAO.withdraw(combo1.getValue(),combo2.getValue().getPaymentPlace().getId_payment_place(),new BigDecimal(500));
+                } catch (CardMaxWithdrawalException e1) {
+                    e1.printStackTrace();
+                } catch (NonExistingAccountNumber nonExistingAccountNumber) {
+                    nonExistingAccountNumber.printStackTrace();
+                }
                 stage.setScene(sceneAccountOverview);
             }
         });
