@@ -1,5 +1,6 @@
 package banking.app.entities;
 
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 import javax.persistence.*;
@@ -52,16 +53,17 @@ public class Transaction {
     }
 
     public SimpleStringProperty getSSSenderCardId(){
-        return new SimpleStringProperty(sender.getId_card().toString());
+        return new SimpleStringProperty(sender.getCard_type().getTypeName().toString());
     }
 
-    public SimpleStringProperty getSSAmount(){
-        return new SimpleStringProperty(amount.toString());
+    public SimpleLongProperty getSSAmount(){
+        return new SimpleLongProperty(amount.longValue());
     }
 
-    public SimpleStringProperty getSSAcountId(){
-        return new SimpleStringProperty(receiver.getId_account().toString());
+    public SimpleLongProperty getSSAcountId(){
+        return new SimpleLongProperty(sender.getId_card());
     }
+
 
     public SimpleStringProperty getSSmessageToSender(){
         return new SimpleStringProperty(messageToSender);

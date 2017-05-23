@@ -2,9 +2,7 @@ package banking.app;
 
 import banking.app.entities.*;
 import banking.app.gui.NumberTextField;
-import banking.app.jpadatabase.AccountDAO;
-import banking.app.jpadatabase.PersonDAO;
-import banking.app.jpadatabase.TransactionDAO;
+import banking.app.jpadatabase.*;
 import banking.app.util.EntityNotFoundException;
 import banking.app.util.IncorrectAccountPasswordException;
 import com.sun.media.jfxmedia.logging.Logger;
@@ -24,9 +22,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 
 /**
  * Created by Tomas on 5/20/2017.
@@ -35,30 +33,147 @@ import java.sql.Date;
 
 public class Gui extends Application {
 
-    private Scene sceneLogin, sceneOverview, sceneAccountDecision, sceneNewUserAccount, sceneExistingUserAccount;
-    private Scene scenePayment;
+    private Scene sceneLogin, sceneAccountOverview, sceneAccountDecision, sceneNewUserAccount, sceneExistingUserAccount;
+    private Scene scenePayment, sceneCardOverview, sceneATMWithdraw, sceneCardCreation, sceneCardDeletion;
 
 
     private TransactionDAO transactionDAO = TransactionDAO.getInstance();
     private PersonDAO personDAO = PersonDAO.getInstance();
     private AccountDAO accountDAO = AccountDAO.getInstance();
+    private CardDAO cardDAO = CardDAO.getInstance();
+    private CardTypeDAO cardTypeDAO = CardTypeDAO.getInstance();
     private Account loggedAccount = null;
-
+    private Card selectedCard = null;
 
     @Override
     public void start(Stage primaryStage) {
+        try {
+            loggedAccount = accountDAO.getEntity((long) 18);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
+
         primaryStage.setTitle("Banking app");
         sceneLogin = createLoginScene(primaryStage);
-        sceneOverview = createOverviewScene(primaryStage);
+        sceneAccountOverview = createAccountOverviewScene(primaryStage);
         sceneAccountDecision = createAccountDecisionScene(primaryStage);
         sceneNewUserAccount = createNewUserAccountScene(primaryStage);
         sceneExistingUserAccount = createExistingUserAccountScene(primaryStage);
         scenePayment = createCardPaymentScene(primaryStage);
-        primaryStage.setScene(sceneOverview);
+        sceneCardOverview = createCardOverviewScene(primaryStage);
+        sceneATMWithdraw = createATMWithdrawScene(primaryStage);
+        sceneCardCreation = createCardCreationScene(primaryStage);
+        sceneCardDeletion = createCardDeleteScene(primaryStage);
+        primaryStage.setScene(sceneAccountOverview);
         primaryStage.show();
     }
 
-    public Scene createOverviewScene(Stage stage) {
+    public Scene createCardOverviewScene(Stage stage){
+        GridPane grid = new GridPane();
+        Scene scene = new Scene(grid, 800, 600);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+
+        Text titleText = new Text("Card Overview");
+        titleText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+
+        VBox titleTextContainer = new VBox();
+        titleTextContainer.setPrefWidth(800);
+        titleTextContainer.getChildren().addAll(titleText);
+        titleTextContainer.setAlignment(Pos.CENTER);
+        grid.add(titleTextContainer, 0, 0, 4,1);
+
+        Text text1 = new Text("Select card ");
+        grid.add(text1,0,1);
+
+        ObservableList<Long> combo1Menu = FXCollections.observableArrayList(loggedAccount.getCardsIds());
+        final ComboBox<Long> combo1 = new ComboBox(combo1Menu);
+
+
+        grid.add(combo1,1,1);
+
+        Button btn = new Button("Select card");
+        HBox hbBtn = new HBox(10);
+        hbBtn.setAlignment(Pos.BOTTOM_LEFT);
+        hbBtn.getChildren().add(btn);
+        grid.add(hbBtn, 2, 1);
+
+        Button btn1 = new Button("Go Back");
+        HBox hbBtn1 = new HBox(10);
+        hbBtn1.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn1.getChildren().add(btn1);
+        grid.add(hbBtn1, 2, 8);
+
+        btn.setOnAction(event->{
+            try {
+                selectedCard = cardDAO.getEntity(combo1.getValue());
+            } catch (EntityNotFoundException e) {
+                e.printStackTrace();
+            }
+            sceneCardOverview = createCardOverviewScene(stage);
+            stage.setScene(sceneCardOverview);
+        });
+
+        btn1.setOnAction(e->{
+            stage.setScene(sceneAccountOverview);
+        });
+
+
+        if(selectedCard != null) {
+            Text text2 = new Text("Card ID: ");
+            grid.add(text2, 0, 2);
+            Text text3 = new Text(selectedCard.getId_card().toString());
+            grid.add(text3, 1, 2);
+
+            Text text4 = new Text("Card Type: ");
+            grid.add(text4, 0, 3);
+            Text text5 = new Text(selectedCard.getCard_type().getTypeName());
+            grid.add(text5, 1, 3);
+
+            Text text6 = new Text("Withdrawal limit: ");
+            grid.add(text6, 0, 4);
+            Text text7 = new Text(selectedCard.getWithdrawalLimit().toString());
+            grid.add(text7, 1, 4);
+
+            TableView table = new TableView();
+
+            table.setEditable(true);
+            TableColumn<Transaction,Long> col1 = new TableColumn<>("Amount");
+            col1.setMinWidth(100);
+            col1.setCellValueFactory(c->c.getValue().getSSAmount().asObject());
+
+            TableColumn<Transaction,String> col2 = new TableColumn<>("Card type");
+            col2.setMinWidth(100);
+            col2.setCellValueFactory(c->c.getValue().getSSSenderCardId());
+
+            TableColumn<Transaction,Long> col3 = new TableColumn<>("Receiver ID");
+            col3.setMinWidth(100);
+            col3.setCellValueFactory(c->c.getValue().getSSAcountId().asObject());
+
+            TableColumn<Transaction,String> col4 = new TableColumn<>("Message to Sender");
+            col4.setMinWidth(200);
+            col4.setCellValueFactory(c->c.getValue().getSSmessageToSender());
+
+            if(loggedAccount != null) {
+                ObservableList<Transaction> transactions = FXCollections.observableArrayList(selectedCard.getSentTransactions());
+                table.setItems(transactions);
+                table.getColumns().addAll(col1, col2, col3, col4);
+            }
+            grid.add(table, 1, 5,2,1);
+
+        }
+
+
+
+
+        return scene;
+    }
+
+
+
+
+    public Scene createAccountOverviewScene(Stage stage) {
         GridPane grid = new GridPane();
         Scene scene = new Scene(grid, 800, 600);
         grid.setHgap(10);
@@ -73,7 +188,7 @@ public class Gui extends Application {
         titleTextContainer.setPrefWidth(800);
         titleTextContainer.getChildren().addAll(titleText);
         titleTextContainer.setAlignment(Pos.CENTER);
-        grid.add(titleTextContainer, 0, 0, 3,1);
+        grid.add(titleTextContainer, 0, 0, 2,1);
 
 
 
@@ -87,70 +202,201 @@ public class Gui extends Application {
             grid.add(balanceText,1,2);
         }
 
-//        ColumnConstraints column0 = new ColumnConstraints();
-//        column0.setPercentWidth(5);
-//        ColumnConstraints column1 = new ColumnConstraints();
-//        column1.setPercentWidth(90);
-//        ColumnConstraints column2 = new ColumnConstraints();
-//        column1.setPercentWidth(5);
-
-//        grid.getColumnConstraints().addAll(column0, column1, column2);
-        TableView table = new TableView();
         //create table
+        TableView table = new TableView();
+
         table.setEditable(true);
-        TableColumn<Transaction,String> col1 = new TableColumn<>("Amount");
+        TableColumn<Transaction,Long> col1 = new TableColumn<>("Amount");
         col1.setMinWidth(100);
-        col1.setCellValueFactory(c->c.getValue().getSSAmount());
+        col1.setCellValueFactory(c->c.getValue().getSSAmount().asObject());
 
-        TableColumn<Transaction,String> col2 = new TableColumn<>("Card ID");
+        TableColumn<Transaction,String> col2 = new TableColumn<>("Card type");
         col2.setMinWidth(100);
-//        col2.setCellValueFactory(c->c.getValue().getSSSenderCardId());
+        col2.setCellValueFactory(c->c.getValue().getSSSenderCardId());
 
-        TableColumn<Transaction,String> col3 = new TableColumn<>("Receiver Account");
+        TableColumn<Transaction,Long> col3 = new TableColumn<>("Receiver ID");
         col3.setMinWidth(100);
-//        col3.setCellValueFactory(c->c.getValue().getSSAcountId());
+        col3.setCellValueFactory(c->c.getValue().getSSAcountId().asObject());
 
         TableColumn<Transaction,String> col4 = new TableColumn<>("Message to Sender");
         col4.setMinWidth(200);
         col4.setCellValueFactory(c->c.getValue().getSSmessageToSender());
 
-//        col3.setCellValueFactory(
-//                new PropertyValueFactory<Transaction, String>("messageToSender"));
-
-//        ObservableList<Transaction> transactions = FXCollections.observableArrayList(transactionDAO.getEntitiesList());
-        Card cardtmp = new Card(new CardType(),new Account("AHOJ", new Person("T","tT",0,"AHOJ")),BigDecimal.ONE);
-        Transaction transtmp = new Transaction(cardtmp,new Account(), BigDecimal.ONE,new Date(20170101));
-        transtmp.setMessageToSender("AHOJ");
-        ObservableList<Transaction> transactions = FXCollections.observableArrayList(transtmp);
-        table.setItems(transactions);
-        table.getColumns().addAll(col1, col2, col3,col4);
+        if(loggedAccount != null) {
+            ObservableList<Transaction> transactions = FXCollections.observableArrayList(loggedAccount.getReceivedTransactions());
+            table.setItems(transactions);
+            table.getColumns().addAll(col1, col2, col3, col4);
+        }
         grid.add(table, 1, 3);
 
         VBox buttonContainer = new VBox();
 
         Button btn = new Button("New payment");
-        btn.setMaxWidth(Double.MAX_VALUE);
         btn.setMinWidth(100.0);
-        Button btn1 = new Button("Card Overview");
-        btn1.setMaxWidth(Double.MAX_VALUE);
+        Button btn1 = new Button("ATM withdraw");
         btn1.setMinWidth(100.0);
-        Button btn2 = new Button("Log out");
-        btn2.setMaxWidth(Double.MAX_VALUE);
+        Button btn2 = new Button("Card overview");
         btn2.setMinWidth(100.0);
+        Button btn3 = new Button("Create card");
+        btn3.setMinWidth(100.0);
+        Button btn4 = new Button("Delete card");
+        btn4.setMinWidth(100.0);
+        Button btn5 = new Button("Log out");
+        btn5.setMinWidth(100.0);
 
-        buttonContainer.getChildren().addAll(btn,btn1,btn2);
+        buttonContainer.getChildren().addAll(btn,btn1,btn2,btn3,btn4,btn5);
         grid.add(buttonContainer,2,3);
 
         btn.setOnAction(e->{
             stage.setScene(scenePayment);
         });
 
+        btn1.setOnAction(e->{
+            stage.setScene(sceneATMWithdraw);
+        });
 
         btn2.setOnAction(e->{
+            stage.setScene(sceneCardOverview);
+        });
+
+        btn3.setOnAction(e->{
+            stage.setScene(sceneCardCreation);
+        });
+
+        btn4.setOnAction(e->{
+            stage.setScene(sceneCardDeletion);
+        });
+
+        btn5.setOnAction(e->{
             stage.setScene(sceneLogin);
         });
 
 
+
+        return scene;
+    }
+
+    public Scene createATMWithdrawScene(Stage stage) {
+        GridPane grid = new GridPane();
+        Scene scene = new Scene(grid, 800, 600);
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+
+        Text loginTitle = new Text("Create new card");
+        loginTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        grid.add(loginTitle, 0, 0, 2, 1);
+
+        ObservableList<Long> combo1Menu = FXCollections.observableArrayList(loggedAccount.getCardsIds());
+        final ComboBox<Long> combo1 = new ComboBox(combo1Menu);
+        grid.add(combo1,1,1);
+
+        Button btn = new Button("Go Back");
+        HBox hbBtn = new HBox(10);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(btn);
+        grid.add(hbBtn, 0, 2);
+
+        Button btnAcc = new Button("Create new Card");
+        HBox hbBtnAcc = new HBox(10);
+        hbBtnAcc.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtnAcc.getChildren().add(btnAcc);
+        grid.add(hbBtnAcc, 1, 2);
+
+        btn.setOnAction(e->{
+            stage.setScene(sceneAccountOverview);
+        });
+
+        return scene;
+    }
+
+
+    public Scene createCardCreationScene(Stage stage) {
+        GridPane grid = new GridPane();
+        Scene scene = new Scene(grid, 800, 600);
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+
+        Text loginTitle = new Text("Create new card");
+        loginTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        grid.add(loginTitle, 0, 0, 2, 1);
+
+        Text text1 = new Text("Card Type: ");
+        grid.add(text1,0,1);
+        ObservableList<CardType> combo1Menu = FXCollections.observableArrayList(cardTypeDAO.getEntitiesList());
+        final ComboBox<CardType> combo1 = new ComboBox(combo1Menu);
+        grid.add(combo1,1,1);
+
+        Text text2 = new Text("Withdraw Limit: ");
+        grid.add(text2, 0, 2);
+        NumberTextField numField1 = new NumberTextField();
+        grid.add(numField1, 1, 2);
+
+        Button btn = new Button("Go Back");
+        HBox hbBtn = new HBox(10);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(btn);
+        grid.add(hbBtn, 1, 3);
+
+        Button btn1 = new Button("Create new Card");
+        HBox hbBtn1 = new HBox(10);
+        hbBtn1.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn1.getChildren().add(btn1);
+        grid.add(hbBtn1, 2, 3);
+
+        btn.setOnAction(e->{
+            stage.setScene(sceneAccountOverview);
+        });
+
+        btn1.setOnAction(e->{
+            if(combo1.getValue() != null && numField1.getText().length() != 0) {
+                Card cardToAdd = new Card(combo1.getValue(),loggedAccount, new BigDecimal(numField1.getText()));
+                cardDAO.saveEntity(cardToAdd);
+                stage.setScene(sceneAccountOverview);
+            }
+        });
+
+        return scene;
+    }
+
+    public Scene createCardDeleteScene(Stage stage) {
+        GridPane grid = new GridPane();
+        Scene scene = new Scene(grid, 800, 600);
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+
+        Text loginTitle = new Text("Delete card");
+        loginTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        grid.add(loginTitle, 0, 0, 2, 1);
+
+        ObservableList<Long> combo1Menu = FXCollections.observableArrayList(loggedAccount.getCardsIds());
+        final ComboBox<Long> combo1 = new ComboBox(combo1Menu);
+        grid.add(combo1,1,1);
+
+        Button btn = new Button("Go Back");
+        HBox hbBtn = new HBox(10);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(btn);
+        grid.add(hbBtn, 0, 2);
+
+        Button btn1 = new Button("Delete card");
+        HBox hbBtn1 = new HBox(10);
+        hbBtn1.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn1.getChildren().add(btn1);
+        grid.add(hbBtn1, 1, 2);
+
+        btn.setOnAction(e->{
+            stage.setScene(sceneAccountOverview);
+        });
+
+        btn1.setOnAction(e->{
+            stage.setScene(sceneAccountOverview);
+        });
 
         return scene;
     }
@@ -206,8 +452,8 @@ public class Gui extends Application {
             }
             if (loggedAccount != null) {
                 clearAllFields(scene);
-                sceneOverview = createOverviewScene(stage);//updates the values in scene
-                stage.setScene(sceneOverview);
+                sceneAccountOverview = createAccountOverviewScene(stage);//updates the values in scene
+                stage.setScene(sceneAccountOverview);
             } else {
                 actiontarget.setText("Wrong input");
                 pwBox.setText("");
@@ -297,8 +543,11 @@ public class Gui extends Application {
 
         Label numLab3 = new Label("Card:");
         grid.add(numLab3,0,3);
-        NumberTextField numField3 = new NumberTextField();
-        grid.add(numField3,1,3);
+        ObservableList<Long> combo1Menu = FXCollections.observableArrayList(loggedAccount.getCardsIds());
+        final ComboBox<Long> combo1 = new ComboBox(combo1Menu);
+        grid.add(combo1,1,3);
+//        NumberTextField numField3 = new NumberTextField();
+//        grid.add(numField3,1,3);
 
         Label textLab1 = new Label("Message to receiver");
         grid.add(textLab1,0,4);
@@ -324,7 +573,7 @@ public class Gui extends Application {
 
         btn.setOnAction(e->{
             clearAllFields(scene);
-            stage.setScene(sceneOverview);
+            stage.setScene(sceneAccountOverview);
         });
 
         btn1.setOnAction(e->{
@@ -337,8 +586,8 @@ public class Gui extends Application {
                 amount = new BigDecimal(numField2.getText());
             }
             Long cardUsed = null;
-            if(numField3.getText().length() != 0) {
-                cardUsed = Long.parseLong(numField3.getText());
+            if(combo1.getValue() != null) {
+                cardUsed = combo1.getValue();
             }
             String messageToReceiver = textField1.getText();
             String messageToSender = textField2.getText();

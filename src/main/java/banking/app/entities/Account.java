@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -146,6 +147,14 @@ public class Account {
 
     public void setReceivedTransactions(List<Transaction> receivedTransactions) {
         this.receivedTransactions = receivedTransactions;
+    }
+
+    public ArrayList<Long> getCardsIds(){
+        ArrayList<Long> cardIds = new ArrayList<>();
+        for (Card card : cards){
+            cardIds.add(card.getId_card());
+        }
+        return cardIds;
     }
 
     @Override

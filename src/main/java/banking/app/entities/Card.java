@@ -1,6 +1,9 @@
 package banking.app.entities;
 
+import javafx.beans.property.SimpleLongProperty;
+
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
@@ -74,6 +77,10 @@ public class Card {
 
     public void setSentTransactions(List<Transaction> transactions) {
         this.sentTransactions = transactions;
+    }
+
+    public SimpleLongProperty getSSCardId(){
+        return new SimpleLongProperty(id_card);
     }
 
     @Override
