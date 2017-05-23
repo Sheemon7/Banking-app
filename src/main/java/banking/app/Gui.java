@@ -42,7 +42,7 @@ public class Gui extends Application {
 
     private Scene sceneLogin, sceneOverview, sceneAccountDecision, sceneNewUserAccount, sceneExistingUserAccount;
     private Scene scenePayment;
-    private TableView table = new TableView();
+
 
     private TransactionDAO transactionDAO = TransactionDAO.getInstance();
     private PersonDAO personDAO = PersonDAO.getInstance();
@@ -59,7 +59,7 @@ public class Gui extends Application {
         sceneNewUserAccount = createNewUserAccountScene(primaryStage);
         sceneExistingUserAccount = createExistingUserAccountScene(primaryStage);
         scenePayment = createCardPaymentScene(primaryStage);
-        primaryStage.setScene(sceneLogin);
+        primaryStage.setScene(sceneOverview);
         primaryStage.show();
     }
 
@@ -100,30 +100,35 @@ public class Gui extends Application {
 //        column1.setPercentWidth(5);
 
 //        grid.getColumnConstraints().addAll(column0, column1, column2);
-
+        TableView table = new TableView();
         //create table
         table.setEditable(true);
-        TableColumn col1 = new TableColumn("Card id");
+        TableColumn<Transaction,String> col1 = new TableColumn<>("Amount");
         col1.setMinWidth(100);
-        col1.setCellValueFactory(
-                new PropertyValueFactory<Transaction, Long>("sender.getId_card()"));
+        col1.setCellValueFactory(c->c.getValue().getSSAmount());
 
-        TableColumn col2 = new TableColumn("Amount");
+        TableColumn<Transaction,String> col2 = new TableColumn<>("Card ID");
         col2.setMinWidth(100);
-        col2.setCellValueFactory(
-                new PropertyValueFactory<Transaction, BigDecimal>("amount"));
+//        col2.setCellValueFactory(c->c.getValue().getSSSenderCardId());
 
-        TableColumn col3 = new TableColumn("Email");
-        col3.setMinWidth(200);
-        col3.setCellValueFactory(
-                new PropertyValueFactory<Transaction, String>("messageToSender"));
+        TableColumn<Transaction,String> col3 = new TableColumn<>("Receiver Account");
+        col3.setMinWidth(100);
+//        col3.setCellValueFactory(c->c.getValue().getSSAcountId());
+
+        TableColumn<Transaction,String> col4 = new TableColumn<>("Message to Sender");
+        col4.setMinWidth(200);
+        col4.setCellValueFactory(c->c.getValue().getSSmessageToSender());
+
+//        col3.setCellValueFactory(
+//                new PropertyValueFactory<Transaction, String>("messageToSender"));
 
 //        ObservableList<Transaction> transactions = FXCollections.observableArrayList(transactionDAO.getEntitiesList());
-        Card cardtmp = new Card(new CardType(),new Account(),BigDecimal.ONE);
+        Card cardtmp = new Card(new CardType(),new Account("AHOJ", new Person("T","tT",0,"AHOJ")),BigDecimal.ONE);
         Transaction transtmp = new Transaction(cardtmp,new Account(), BigDecimal.ONE,new Date(20170101));
+        transtmp.setMessageToSender("AHOJ");
         ObservableList<Transaction> transactions = FXCollections.observableArrayList(transtmp);
         table.setItems(transactions);
-        table.getColumns().addAll(col1, col2, col3);
+        table.getColumns().addAll(col1, col2, col3,col4);
         grid.add(table, 1, 3);
 
         VBox buttonContainer = new VBox();
@@ -414,7 +419,7 @@ public class Gui extends Application {
                 amount=new BigDecimal(numField2.getText());
             }
             String password = pwBox.getText();
-
+            System.out.println(ownerId);
 
             if (ownerId != null && amount != null && password != "") {
                 Person owner = null;
