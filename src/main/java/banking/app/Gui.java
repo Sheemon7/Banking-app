@@ -69,6 +69,7 @@ public class Gui extends Application {
         sceneATMWithdraw = createATMWithdrawScene(stage);
         sceneCardCreation = createCardCreationScene(stage);
         sceneCardDeletion = createCardDeleteScene(stage);
+        scenePayment = createCardPaymentScene(stage);
     }
 
     public Scene createCardOverviewScene(Stage stage){
