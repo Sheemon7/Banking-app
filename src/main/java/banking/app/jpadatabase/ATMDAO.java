@@ -5,6 +5,7 @@ import banking.app.entities.Account;
 import banking.app.entities.Card;
 import banking.app.entities.Transaction;
 import banking.app.util.CardMaxWithdrawalException;
+import banking.app.util.CardNotAcceptedException;
 import banking.app.util.EntityNotFoundException;
 import banking.app.util.NonExistingAccountNumber;
 
@@ -40,7 +41,7 @@ public class ATMDAO extends DataAccessObject<ATM>{
     }
 
     public void withdraw(Card fromCard, long ATMId, BigDecimal amount)
-            throws CardMaxWithdrawalException, NonExistingAccountNumber {
+            throws CardMaxWithdrawalException, NonExistingAccountNumber, CardNotAcceptedException {
         ATM atm;
         try {
             atm = ATMDAO.getInstance().getEntity(ATMId);
@@ -53,6 +54,11 @@ public class ATMDAO extends DataAccessObject<ATM>{
         if (amount.compareTo(fromCard.getWithdrawalLimit()) > 0) {
             TRANSACTION.rollback();
             throw new CardMaxWithdrawalException();
+        }
+
+        if (!atm.getPaymentPlace().getAccepts().contains(fromCard.getCard_type())) {
+            TRANSACTION.rollback();
+            throw new CardNotAcceptedException();
         }
 
         Account fromAccount = fromCard.getAccount();
