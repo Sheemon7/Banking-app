@@ -1,5 +1,6 @@
 package banking.app;
 
+import banking.app.entities.*;
 import banking.app.jpadatabase.*;
 import javafx.application.Application;
 
@@ -42,6 +43,7 @@ public class Main {
         traderDAO.printKRichestTraders(k);
         traderDAO.printKTradersWithBiggestRevenue(k);
 
+        System.out.println("Suspicious transactions");
         System.out.println(transactionDAO.getSuspiciousTransactions());
 
         try {
@@ -63,7 +65,7 @@ public class Main {
         System.out.println("Updating bonuses between " + begin + " and " + end) ;
         da.updateBonuses(begin, end, multiplier);
 
-        Application.launch(Gui.class,args);
+//        Application.launch(Gui.class,args);
 
         // close connections
         DatabaseAccess.closeAllConnections();

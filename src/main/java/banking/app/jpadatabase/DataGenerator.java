@@ -27,7 +27,7 @@ public class DataGenerator extends DatabaseAccess {
     private static final Random RANDOM = new Random(0L);
 
     private static final int PIN_RANGE = Integer.MAX_VALUE;
-    private static final BigDecimal MAX_INIT_BALANCE = new BigDecimal("100000000");
+    private static final BigDecimal MAX_INIT_BALANCE = new BigDecimal("1000000");
     private static final List<String> FIRST_NAMES = loadDataString("data\\first_names.txt");
     private static final List<String> SECOND_NAMES = loadDataString("data\\second_names.txt");
     private static final List<String> ADDRESSES = loadDataString("data\\addresses.txt");
@@ -64,13 +64,13 @@ public class DataGenerator extends DatabaseAccess {
         System.out.println("Generating new accounts");
         generateAccounts(2 * count);
         System.out.println("Generating new cards");
-        generateCards(5 * count);
+        generateCards(3 * count);
         System.out.println("Generating new traders");
         generateTraders(count);
         System.out.println("Generating new atms");
         generateATMS(count);
         System.out.println("Generating new transactions");
-        generateTransactions(count * 100);
+        generateTransactions(count * 50);
     }
 
     private static void generatePersons(int count) {

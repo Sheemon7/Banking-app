@@ -7,18 +7,19 @@ BEGIN
   -- SELECT a
   -- FROM account a
   UPDATE account a
-  SET balance = (balance + balance * multiplier)
-  WHERE EXISTS (
+  SET balance = (balance + balance * 0.01)
+  WHERE EXISTS(
       SELECT NULL
-      FROM (              SELECT c.id_card
-                         FROM transaction t
-                           JOIN card c ON
-                                         t.id_card = c.id_account
-                         WHERE t.date >= start_date AND t.date <= end_date
-                         GROUP BY c.id_card
-                         HAVING COUNT(c) >= 3) as eligible_cards
-  WHERE a.id_account = eligible_cards.id_card);
-
+      FROM (
+             SELECT c.id_account
+             FROM transaction t
+               JOIN card c ON
+                             t.id_card = c.id_account
+             WHERE t.date >= '2017/05/01' AND t.date <= '2017/06/01'
+             GROUP BY c.id_card
+             HAVING COUNT(c) >= 3
+           ) AS eligible_cards
+      WHERE a.id_account = eligible_cards.id_account);
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE;

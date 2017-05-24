@@ -86,9 +86,6 @@ public class CardType {
 
     @Override
     public String toString() {
-        return "CardType{" +
-                "id=" + id_card_type +
-                ", typeName='" + typeName + '\'' +
-                '}';
+        return typeName;
     }
 }
