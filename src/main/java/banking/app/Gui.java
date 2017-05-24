@@ -59,7 +59,7 @@ public class Gui extends Application {
         sceneATMWithdraw = createATMWithdrawScene(primaryStage);
         sceneCardCreation = createCardCreationScene(primaryStage);
         sceneCardDeletion = createCardDeleteScene(primaryStage);
-        primaryStage.setScene(sceneAccountOverview);
+        primaryStage.setScene(sceneLogin);
         primaryStage.show();
     }
 
