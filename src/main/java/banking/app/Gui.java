@@ -42,11 +42,11 @@ public class Gui extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-//        try {
-//            loggedAccount = accountDAO.getEntity((long) 3);
-//        } catch (EntityNotFoundException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            loggedAccount = accountDAO.getEntity((long) 3);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
 
         primaryStage.setTitle("Banking app");
         sceneLogin = createLoginScene(primaryStage);
@@ -90,7 +90,6 @@ public class Gui extends Application {
 
         Text text1 = new Text("Select card ");
         grid.add(text1,0,1);
-
         ObservableList<Long> combo1Menu = FXCollections.observableArrayList(loggedAccount.getCardsIds());
         final ComboBox<Long> combo1 = new ComboBox(combo1Menu);
 
@@ -520,6 +519,7 @@ public class Gui extends Application {
             }
             if (loggedAccount != null) {
                 clearAllFields(scene);
+                updateScenes(stage);
                 sceneAccountOverview = createAccountOverviewScene(stage);//updates the values in scene
                 stage.setScene(sceneAccountOverview);
             } else {
@@ -611,7 +611,10 @@ public class Gui extends Application {
 
         Label numLab3 = new Label("Card:");
         grid.add(numLab3,0,3);
-        ObservableList<Card> combo1Menu = FXCollections.observableArrayList(loggedAccount.getCards());
+        ObservableList<Card> combo1Menu = null;
+        if(loggedAccount != null){
+            combo1Menu = FXCollections.observableArrayList(loggedAccount.getCards());
+        }
 
         final ComboBox<Card> combo1 = new ComboBox(combo1Menu);
         grid.add(combo1,1,3);
