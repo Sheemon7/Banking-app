@@ -54,7 +54,7 @@ public class AccountDAO extends DataAccessObject<Account> {
     }
 
     public void pay(Card fromCard, long toAccountId, String messageToSender, String messageToReceiver, BigDecimal amount)
-            throws NonExistingAccountNumber, NotEnoughMoneyException {
+            throws NonExistingAccountNumber, NotEnoughMoneyException, CardMaxWithdrawalException {
         Account toAccount, fromAccount = fromCard.getAccount();
         try {
             toAccount = getEntity(toAccountId);
@@ -67,6 +67,11 @@ public class AccountDAO extends DataAccessObject<Account> {
         if (amount.compareTo(fromAccount.getBalance()) > 0) {
             TRANSACTION.rollback();
             throw new NotEnoughMoneyException();
+        }
+
+        if (amount.compareTo(fromCard.getWithdrawalLimit()) > 0) {
+            TRANSACTION.rollback();
+            throw new CardMaxWithdrawalException();
         }
 
         Transaction t = new Transaction(fromCard, toAccount, amount,
