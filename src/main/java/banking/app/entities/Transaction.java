@@ -65,14 +65,17 @@ public class Transaction {
         String tmp;
         if(receiver == null){
             tmp = "ATM";
-        }else {
+        } else {
+//            tmp = sender.getAccount().getIban();
             tmp = receiver.getIban();
         }
         return new SimpleStringProperty(tmp);
     }
 
     public SimpleStringProperty getSSAcountId(){
+
         return new SimpleStringProperty(sender.getAccount().getIban());
+//        return new SimpleStringProperty(receiver.getIban());
     }
 
 

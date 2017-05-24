@@ -151,6 +151,7 @@ public class DataGenerator extends DatabaseAccess {
 
     private static void generateTransactions(int count) {
         List<Card> cards = CARD_DAO.getEntitiesList();
+        List<Account> accounts = ACCOUNT_DAO.getEntitiesList();
         List<ATM> atms = ATM_DAO.getEntitiesList();
         List<Trader> traders = TRADER_DAO.getEntitiesList();
 
@@ -187,10 +188,10 @@ public class DataGenerator extends DatabaseAccess {
             BigDecimal paid = new BigDecimal(Math.random()).multiply(c.getWithdrawalLimit()).round(new MathContext(2, RoundingMode.HALF_UP));
             Long d = BEGIN_TRANSACTION_DATE.getTime() + ((long) (RANDOM.nextDouble() * (END_TRANSACTION_DATE.getTime() - BEGIN_TRANSACTION_DATE.getTime())));
             Date date = new Date(d);
-
+            Account a = accounts.get(RANDOM.nextInt(accounts.size()));
             String messageReceiver = MESSAGES.get(RANDOM.nextInt(MESSAGES.size()));
             String messageSender = MESSAGES.get(RANDOM.nextInt(MESSAGES.size()));
-            Transaction tr = new Transaction(c, c.getAccount(), paid, messageSender, messageReceiver, date);
+            Transaction tr = new Transaction(c, a, paid, messageSender, messageReceiver, date);
             TRANSACTION_DAO.saveEntity(tr);
         }
     }

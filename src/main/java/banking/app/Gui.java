@@ -508,23 +508,28 @@ public class Gui extends Application {
 
 
         btn.setOnAction(e -> {
+            boolean isOk = true;
             try {
                 loggedAccount = accountDAO.loginAccount(Long.parseLong(idTextField.getText()), pwBox.getText());
             } catch (IncorrectAccountPasswordException e1) {
-                actiontarget.setFill(Color.FIREBRICK);
-                actiontarget.setText("Wrong account Id");
-            } catch (EntityNotFoundException e1) {
+                isOk = false;
                 actiontarget.setFill(Color.FIREBRICK);
                 actiontarget.setText("Wrong password");
+            } catch (EntityNotFoundException e1) {
+                actiontarget.setFill(Color.FIREBRICK);
+                actiontarget.setText("Wrong account Id");
+                isOk = false;
             }
-            if (loggedAccount != null) {
-                clearAllFields(scene);
-                updateScenes(stage);
-                sceneAccountOverview = createAccountOverviewScene(stage);//updates the values in scene
-                stage.setScene(sceneAccountOverview);
-            } else {
-                actiontarget.setText("Wrong input");
-                pwBox.setText("");
+            if(isOk) {
+                if (loggedAccount != null) {
+                    clearAllFields(scene);
+                    updateScenes(stage);
+                    sceneAccountOverview = createAccountOverviewScene(stage);//updates the values in scene
+                    stage.setScene(sceneAccountOverview);
+                } else {
+                    actiontarget.setText("Wrong input");
+                    pwBox.setText("");
+                }
             }
         });
 

@@ -65,7 +65,7 @@ public class Main {
         System.out.println("Updating bonuses between " + begin + " and " + end) ;
         da.updateBonuses(begin, end, multiplier);
 
-        Application.launch(Gui.class,args);
+//        Application.launch(Gui.class,args);
 
         // close connections
         DatabaseAccess.closeAllConnections();

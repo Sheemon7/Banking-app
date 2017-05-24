@@ -69,7 +69,6 @@ public class CardType {
 
         if (id_card_type != null ? !id_card_type.equals(cardType.id_card_type) : cardType.id_card_type != null) return false;
         if (typeName != null ? !typeName.equals(cardType.typeName) : cardType.typeName != null) return false;
-        if (cards != null ? !cards.equals(cardType.cards) : cardType.cards != null) return false;
         return acceptedAt != null ? acceptedAt.equals(cardType.acceptedAt) : cardType.acceptedAt == null;
 
     }
