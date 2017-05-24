@@ -42,11 +42,11 @@ public class Gui extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        try {
-            loggedAccount = accountDAO.getEntity((long) 3);
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            loggedAccount = accountDAO.getEntity((long) 3);
+//        } catch (EntityNotFoundException e) {
+//            e.printStackTrace();
+//        }
 
         primaryStage.setTitle("Banking app");
         sceneLogin = createLoginScene(primaryStage);
@@ -611,6 +611,7 @@ public class Gui extends Application {
         Label numLab3 = new Label("Card:");
         grid.add(numLab3,0,3);
         ObservableList<Card> combo1Menu = FXCollections.observableArrayList(loggedAccount.getCards());
+
         final ComboBox<Card> combo1 = new ComboBox(combo1Menu);
         grid.add(combo1,1,3);
 //        NumberTextField numField3 = new NumberTextField();
