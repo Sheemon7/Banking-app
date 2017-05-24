@@ -238,8 +238,9 @@ public class Gui extends Application {
 
         Button btn = new Button("New payment");
         btn.setMinWidth(100.0);
-//        Button btn1 = new Button("ATM withdraw");
-//        btn1.setMinWidth(100.0);
+        Button btn1 = new Button("ATM withdraw");
+        btn1.setMinWidth(100.0);
+        btn1.setDisable(true);
         Button btn2 = new Button("Card overview");
         btn2.setMinWidth(100.0);
         Button btn3 = new Button("Create card");
@@ -249,7 +250,7 @@ public class Gui extends Application {
         Button btn5 = new Button("Log out");
         btn5.setMinWidth(100.0);
 
-        buttonContainer.getChildren().addAll(btn,btn2,btn3,btn4,btn5);
+        buttonContainer.getChildren().addAll(btn,btn1,btn2,btn3,btn4,btn5);
         grid.add(buttonContainer,2,3);
 
         btn.setOnAction(e->{
@@ -672,6 +673,10 @@ public class Gui extends Application {
                 } catch (NotEnoughMoneyException e1) {
                     isOk = false;
                     textWarning.setText("Not enough money");
+                    e1.printStackTrace();
+                } catch (CardMaxWithdrawalException e1) {
+                    isOk = false;
+                    textWarning.setText("Card limit " + combo1.getValue().getWithdrawalLimit());
                     e1.printStackTrace();
                 }
                 try {
