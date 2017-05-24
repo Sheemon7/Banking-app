@@ -164,7 +164,7 @@ public class DataGenerator extends DatabaseAccess {
             } while (!atm.getPaymentPlace().getAccepts().contains(c.getCard_type()));
 
             // ATM transactions have null for account and negative remainders
-            BigDecimal withdrew = new BigDecimal(Math.random()).multiply(atm.getMaxWithdrawal()).round(new MathContext(2, RoundingMode.HALF_UP));
+            BigDecimal withdrew = new BigDecimal(Math.random()).multiply(c.getWithdrawalLimit()).round(new MathContext(2, RoundingMode.HALF_UP));
             withdrew = withdrew.multiply(new BigDecimal("-1"));
             Long d = BEGIN_TRANSACTION_DATE.getTime() + ((long) (RANDOM.nextDouble() * (END_TRANSACTION_DATE.getTime() - BEGIN_TRANSACTION_DATE.getTime())));
             Date date = new Date(d);
