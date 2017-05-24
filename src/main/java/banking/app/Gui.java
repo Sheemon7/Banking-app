@@ -148,13 +148,13 @@ public class Gui extends Application {
             col1.prefWidthProperty().bind(table.widthProperty().divide(6));
             col1.setCellValueFactory(c->c.getValue().getSSAmount().asObject());
 
-            TableColumn<Transaction,String> col2 = new TableColumn<>("Card type");
+            TableColumn<Transaction,String> col2 = new TableColumn<>("Date");
             col2.prefWidthProperty().bind(table.widthProperty().divide(6));
             col2.setCellValueFactory(c->c.getValue().getSSSenderCardId());
 
-            TableColumn<Transaction,Long> col3 = new TableColumn<>("Receiver ID");
+            TableColumn<Transaction,String> col3 = new TableColumn<>("Receiver ID");
             col3.prefWidthProperty().bind(table.widthProperty().divide(6));
-            col3.setCellValueFactory(c->c.getValue().getSSAcountId().asObject());
+            col3.setCellValueFactory(c->c.getValue().getSSACCID());
 
             TableColumn<Transaction,String> col4 = new TableColumn<>("Message to Sender");
             col4.prefWidthProperty().bind(table.widthProperty().divide(2));
@@ -163,7 +163,7 @@ public class Gui extends Application {
             if(loggedAccount != null) {
                 ObservableList<Transaction> transactions = FXCollections.observableArrayList(selectedCard.getSentTransactions());
                 table.setItems(transactions);
-                table.getColumns().addAll(col1, col2, col3, col4);
+                table.getColumns().addAll(col3, col2, col1, col4);
             }
             grid.add(table, 0, 5,4,1);
 
@@ -215,13 +215,13 @@ public class Gui extends Application {
         col1.prefWidthProperty().bind(table.widthProperty().divide(6));
         col1.setCellValueFactory(c->c.getValue().getSSAmount().asObject());
 
-        TableColumn<Transaction,String> col2 = new TableColumn<>("Card type");
+        TableColumn<Transaction,String> col2 = new TableColumn<>("Date");
         col2.prefWidthProperty().bind(table.widthProperty().divide(6));
         col2.setCellValueFactory(c->c.getValue().getSSSenderCardId());
 
-        TableColumn<Transaction,Long> col3 = new TableColumn<>("Receiver ID");
+        TableColumn<Transaction,String> col3 = new TableColumn<>("Sender Iban");
         col3.prefWidthProperty().bind(table.widthProperty().divide(6));
-        col3.setCellValueFactory(c->c.getValue().getSSAcountId().asObject());
+        col3.setCellValueFactory(c->c.getValue().getSSAcountId());
 
         TableColumn<Transaction,String> col4 = new TableColumn<>("Message to Sender");
         col4.prefWidthProperty().bind(table.widthProperty().divide(2));
@@ -230,7 +230,7 @@ public class Gui extends Application {
         if(loggedAccount != null) {
             ObservableList<Transaction> transactions = FXCollections.observableArrayList(loggedAccount.getReceivedTransactions());
             table.setItems(transactions);
-            table.getColumns().addAll(col1, col2, col3, col4);
+            table.getColumns().addAll(col3, col2, col1, col4);
         }
         grid.add(table, 1, 3);
 
@@ -330,13 +330,7 @@ public class Gui extends Application {
 
         btn500.setOnAction(e->{
             if(combo1.getValue()!=null) {
-                try {
-                    atmDAO.withdraw(combo1.getValue(),combo2.getValue().getPaymentPlace().getId_payment_place(),new BigDecimal(500));
-                } catch (CardMaxWithdrawalException e1) {
-                    e1.printStackTrace();
-                } catch (NonExistingAccountNumber nonExistingAccountNumber) {
-                    nonExistingAccountNumber.printStackTrace();
-                }
+//                x
                 stage.setScene(sceneAccountOverview);
             }
         });
@@ -643,6 +637,10 @@ public class Gui extends Application {
         hbBtn1.getChildren().add(btn1);
         grid.add(hbBtn1, 1, 6);
 
+        Text textWarning = new Text();
+        textWarning.setFill(Color.FIREBRICK);
+        grid.add(textWarning,0,7);
+
         btn.setOnAction(e->{
             clearAllFields(scene);
             stage.setScene(sceneAccountOverview);
@@ -664,11 +662,16 @@ public class Gui extends Application {
 
             if(targetAccount != null && amount != null && cardUsed != null){
                 //check balance on account
+                boolean isOk = true;
                 try {
                     accountDAO.pay(cardUsed,targetAccount,messageToSender,messageToReceiver,amount);
                 } catch (NonExistingAccountNumber nonExistingAccountNumber) {
+                    isOk = false;
+                    textWarning.setText("Account does not exist");
                     nonExistingAccountNumber.printStackTrace();
                 } catch (NotEnoughMoneyException e1) {
+                    isOk = false;
+                    textWarning.setText("Not enough money");
                     e1.printStackTrace();
                 }
                 try {
@@ -676,11 +679,15 @@ public class Gui extends Application {
                 } catch (EntityNotFoundException e1) {
                     e1.printStackTrace();
                 }
-                clearAllFields(scene);
-                combo1.setValue(null);
-                updateScenes(stage);
+                if(isOk) {
+                    clearAllFields(scene);
+                    combo1.setValue(null);
+                    updateScenes(stage);
 
-                stage.setScene(sceneAccountOverview);
+                    stage.setScene(sceneAccountOverview);
+                }
+            }else{
+                textWarning.setText("Insert please all informations");
             }
 
 

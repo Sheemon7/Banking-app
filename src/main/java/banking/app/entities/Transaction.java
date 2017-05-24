@@ -53,15 +53,26 @@ public class Transaction {
     }
 
     public SimpleStringProperty getSSSenderCardId(){
-        return new SimpleStringProperty(sender.getCard_type().getTypeName().toString());
+//        return new SimpleStringProperty(sender.getCard_type().getTypeName().toString());
+        return new SimpleStringProperty(date.toString());
     }
 
     public SimpleLongProperty getSSAmount(){
         return new SimpleLongProperty(amount.longValue());
     }
 
-    public SimpleLongProperty getSSAcountId(){
-        return new SimpleLongProperty(sender.getAccount().getId_account());
+    public SimpleStringProperty getSSACCID(){
+        String tmp;
+        if(receiver == null){
+            tmp = "ATM";
+        }else {
+            tmp = receiver.getIban();
+        }
+        return new SimpleStringProperty(tmp);
+    }
+
+    public SimpleStringProperty getSSAcountId(){
+        return new SimpleStringProperty(sender.getAccount().getIban());
     }
 
 
